@@ -1,0 +1,9 @@
+{
+	"auth": {
+		"football86e86ad4": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	}
+}

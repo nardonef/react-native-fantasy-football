@@ -1,0 +1,19 @@
+{
+    "ffb": {
+        "awscloudformation": {
+            "AuthRoleName": "football-ffb-20191029213052-authRole",
+            "UnauthRoleArn": "arn:aws:iam::932542346500:role/football-ffb-20191029213052-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::932542346500:role/football-ffb-20191029213052-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "football-ffb-20191029213052-deployment",
+            "UnauthRoleName": "football-ffb-20191029213052-unauthRole",
+            "StackName": "football-ffb-20191029213052",
+            "StackId": "arn:aws:cloudformation:us-east-1:932542346500:stack/football-ffb-20191029213052/e93da7a0-fab4-11e9-a8c7-0ed7a3d4fec0"
+        },
+        "categories": {
+            "auth": {
+                "football86e86ad4": {}
+            }
+        }
+    }
+}
