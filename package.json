@@ -11,6 +11,9 @@
   },
   "dependencies": {
     "aws-amplify": "^1.2.4",
+    "js-base64": "^2.5.1",
+    "lodash": "^4.17.15",
+    "qs": "^6.9.0",
     "react": "16.9.0",
     "react-native": "0.61.2",
     "react-native-gesture-handler": "^1.5.0",

@@ -9,19 +9,23 @@
 import React from 'react';
 import Home from './screens/home';
 import SignIn from './screens/signIn';
-import { Navigation } from 'react-native-navigation';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-const AppNavigator = createStackNavigator({
-    Home: {
-        screen: SignIn,
+const AppNavigator = createStackNavigator(
+    {
+        Home: Home,
+        SignIn: SignIn,
     },
-});
+    {
+        initialRouteName: 'SignIn',
+    }
+);
 
-// Navigation.registerComponent(`navigation.playground.WelcomeScreen`, () => SignIn);
-//
-//
+export default createAppContainer(AppNavigator);
+
+
+
 // const App = () => {
 //   return (
 //       <Home/>
@@ -30,4 +34,3 @@ const AppNavigator = createStackNavigator({
 //
 // export default App;
 
-export default createAppContainer(AppNavigator);
