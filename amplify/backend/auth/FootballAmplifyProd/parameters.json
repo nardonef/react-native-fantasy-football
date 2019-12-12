@@ -1,10 +1,10 @@
 {
-    "identityPoolName": "football86e86ad4_identitypool_86e86ad4",
+    "identityPoolName": "FootballAmplifyProd",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "footba86e86ad4",
-    "userPoolName": "football86e86ad4_userpool_86e86ad4",
+    "resourceNameTruncated": "Footba67ac1513",
+    "userPoolName": "FootballAmplifyProd",
     "autoVerifiedAttributes": [
-        "email"
+        "phone_number"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
@@ -17,9 +17,7 @@
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
-    "requiredAttributes": [
-        "email"
-    ],
+    "requiredAttributes": [],
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [
@@ -28,10 +26,14 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "footba86e86ad4_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "Footba67ac1513_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "football86e86ad4",
+    "useDefault": "manual",
     "authSelections": "identityPoolAndUserPool",
+    "resourceName": "FootballAmplifyProd",
+    "thirdPartyAuth": false,
+    "triggers": "{}",
+    "hostedUI": false,
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -44,6 +46,9 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
     "dependsOn": []
 }

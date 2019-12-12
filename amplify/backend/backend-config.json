@@ -1,6 +1,6 @@
 {
 	"auth": {
-		"football86e86ad4": {
+		"FootballAmplifyProd": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": []
