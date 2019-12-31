@@ -1,7 +1,8 @@
 import React from 'react';
-import {Text, View, SafeAreaView, ScrollView, StyleSheet} from 'react-native';
+import {Text, SafeAreaView, StyleSheet, Dimensions} from 'react-native';
 import Tweet from '../components/tweet';
 import PTRView from 'react-native-pull-to-refresh';
+import styleConstants from '../styles/styleConstants';
 
 class HomeScreen extends React.Component {
 
@@ -61,9 +62,12 @@ class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        backgroundColor: styleConstants.tweetsColor,
     },
     scrollView: {
-        backgroundColor: '#1b2836',
+        backgroundColor: styleConstants.tweetsColor,
     },
     errorMessage: {
         textAlign: 'center',

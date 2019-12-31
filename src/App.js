@@ -7,19 +7,25 @@
  */
 
 import React from 'react';
-import Home from './screens/home';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import Twitter from './screens/twitter';
+import SetLeagueId from './screens/setLeagueId'
 import SignIn from './screens/signIn';
 import ProfileAuthorization from './screens/ProfileAuthorization'
 import Test from './screens/Test';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
+import HomeNavigator from './screens/homeNavigator';
+import SignUp from './screens/signUp';
 
 const AppNavigator = createStackNavigator(
     {
-        Home: Home,
+        Twitter: Twitter,
+        SetLeagueId: SetLeagueId,
         SignIn: SignIn,
         ProfileAuthorization: ProfileAuthorization,
         Test: Test,
+        HomeNavigator: HomeNavigator,
+        SignUp: SignUp,
     },
     {
         initialRouteName: 'SignIn',
@@ -28,14 +34,3 @@ const AppNavigator = createStackNavigator(
 );
 
 export default createAppContainer(AppNavigator);
-
-
-
-// const App = () => {
-//   return (
-//       <Home/>
-//   );
-// };
-//
-// export default App;
-

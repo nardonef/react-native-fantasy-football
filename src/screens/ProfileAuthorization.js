@@ -5,12 +5,11 @@ import {
     Button,
     Linking,
     AsyncStorage,
-    Text,
+    Text, Dimensions,
 } from 'react-native'
 import qs from 'qs';
-import _ from 'lodash';
 import PropTypes from 'prop-types';
-import FormTextInput from '../components/FormTextInput';
+import styleConstants from '../styles/styleConstants';
 import yahooConfig from './../../yahooConfig';
 import Amplify, { Auth } from 'aws-amplify';
 import { Base64 } from 'js-base64';
@@ -73,19 +72,16 @@ const ProfileAuthorization = (props) => {
 
                 setToken(token);
                 const {navigate} = props.navigation;
-                navigate('Test', token)
+                navigate('HomeNavigator', token)
             }
         }).catch(err => console.error('1Error fetching token', err));
     };
 
     const OAuth = async () => {
-        const refresh_token = await AsyncStorage.getItem(REFRESH_TOKEN);
-        console.log(`refresh_token in OAuth: ${refresh_token}`);
-        if (refresh_token !== null) {
-            console.log('Found refresh_token');
-            // Get access_token
-            getToken(refresh_token, 'refresh_token');
-            return;
+        const isRefreshTokenPresent = await checkForRefreshToken();
+
+        if(isRefreshTokenPresent) {
+            return
         }
 
         const oauthurl = 'https://api.login.yahoo.com/oauth2/request_auth?' +
@@ -120,10 +116,31 @@ const ProfileAuthorization = (props) => {
         Linking.addEventListener('url', handleUrl);
     };
 
-    console.log(props.navigation.state.params.username);
+    const checkForRefreshToken = async () => {
+        const refresh_token = await AsyncStorage.getItem(REFRESH_TOKEN);
+        if (!refresh_token) {
+            return false;
+        }
+
+        getToken(refresh_token, 'refresh_token');
+        return true;
+    };
+
+    useEffect(() => {
+        checkForRefreshToken().then()
+    }, []);
+
     return (
-        <View style={styles.container}>
-            <Button title={'Yahoo'} onPress={OAuth}/>
+        <View style={styles.screen}>
+            <View style={styles.container}>
+                <Text style={styles.authText}>
+                    For the optimal experience authorize access to your team
+                    by signing in to your Yahoo account
+                </Text>
+                <Text style={styles.yahooButton} onPress={OAuth}>
+                    Yahoo
+                </Text>
+            </View>
         </View>
     )
 };
@@ -131,12 +148,33 @@ const ProfileAuthorization = (props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: styleConstants.backgroundColor,
         alignItems: 'center',
-        justifyContent: 'space-between',
         marginTop: 300,
-
+        textAlign: 'center'
     },
+    screen: {
+        backgroundColor: styleConstants.backgroundColor,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+    authText: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginBottom: styleConstants.margin
+    },
+    yahooButton: {
+        backgroundColor: styleConstants.secondaryColor,
+        color: 'white',
+        fontSize: 14,
+        overflow: 'hidden',
+        padding: 12,
+        textAlign:'center',
+        marginTop: styleConstants.margin,
+        width: '70%',
+        borderRadius:5,
+        borderWidth: 1,
+    }
 });
 
 export default ProfileAuthorization;

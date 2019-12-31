@@ -6,8 +6,7 @@ import {
     Linking,
     AsyncStorage,
     Text,
-    Dimensions,
-    TouchableOpacity
+    Dimensions, TouchableOpacity,
 } from 'react-native'
 import _ from 'lodash';
 import PropTypes from 'prop-types';
@@ -20,36 +19,41 @@ Amplify.configure(awsconfig);
 const SignIn = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('');
 
-    const signIn = () => {
-        Auth.signIn(username, password)
+    const signUp = () => {
+        Auth.signUp({
+            username: username,
+            password: password,
+        })
             .then(data => {
+                console.log(data);
                 const {navigate} = props.navigation;
-                // navigate('ProfileAuthorization', {
-                //     username: username
-                // });
-                navigate('SetLeagueId');
+                navigate('ProfileAuthorization', {
+                    username: username
+                });
             })
             .catch(err => console.log(err));
     };
 
     const navigateToSignUp = () => {
         const {navigate} = props.navigation;
-        navigate('SignUp');
+        navigate('SignIn');
     };
 
     return (
         <View style={styles.background}>
             <View style={styles.container}>
-                <FormTextInput placeholder={'Username'} onChangeText={setUsername}/>
+                <FormTextInput placeholder={'Email'} onChangeText={setEmail}/>
+                <FormTextInput placeholder={'UserName'} onChangeText={setUsername}/>
                 <FormTextInput placeholder={'Password'} onChangeText={setPassword}/>
-                <Text style={styles.logInButton} onPress={signIn}>
-                    Log In
+                <Text style={styles.signUpButton} onPress={signUp}>
+                    Sign Up
                 </Text>
-                <TouchableOpacity onPress={navigateToSignUp} style={styles.signUpTouch}>
-                    <View style={styles.signUp}>
-                        <Text>New User? </Text>
-                        <Text>Sign Up!</Text>
+                <TouchableOpacity onPress={navigateToSignUp} style={styles.signInTouch}>
+                    <View style={styles.signIn}>
+                        <Text>Already have an Account? </Text>
+                        <Text>Log in!</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -65,14 +69,14 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: styleConstants.backgroundColor,
         alignItems: 'center',
-        marginTop: '100%',
+        marginTop: 450,
     },
     background: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
         backgroundColor: styleConstants.backgroundColor,
     },
-    logInButton: {
+    signUpButton: {
         backgroundColor: styleConstants.secondaryColor,
         color: 'white',
         fontSize: 14,
@@ -83,19 +87,19 @@ const styles = StyleSheet.create({
         width: '70%',
         borderRadius:5,
         borderWidth: 1,
-        height: 42,
     },
-    signUpTouch: {
+    signIn: {
         backgroundColor: styleConstants.backgroundColor,
-        width: '80%',
-        height: 50,
-    },
-    signUp: {
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-    }
+    },
+    signInTouch: {
+        backgroundColor: styleConstants.backgroundColor,
+        width: '80%',
+        height: 50,
+    },
 });
 
 export default SignIn;

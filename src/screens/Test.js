@@ -6,20 +6,26 @@ import {
     Linking,
     AsyncStorage,
     Text,
+    SafeAreaView,
+    ScrollView,
+    Dimensions
 } from 'react-native'
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import PlayerCard from '../components/PlayerCard';
+import {Player, formatYahooRoster} from '../models/Player';
 
 const Test = (props) => {
     const [profile, setProfile] = useState([]);
     const [roster, setRoster] = useState({});
     const {access_token} = props.navigation.state.params;
-    const leaugeId = 717523;
+    const leagueId = 717523;
     const gameId = 390;
 
     const getProfile =  async(numberOfTeams) => {
         while (numberOfTeams > 0) {
-            const dataurl = `https://fantasysports.yahooapis.com/fantasy/v2/team/${gameId}.l.${leaugeId}.t.${numberOfTeams}?format=json`;
+            const dataurl = `https://fantasysports.yahooapis.com/fantasy/v2/team/${gameId}.l.${leagueId}.t.${numberOfTeams}?format=json`;
 
             const response = await fetch(dataurl, {
                 method: 'GET',
@@ -43,7 +49,7 @@ const Test = (props) => {
 
 
     const getNumberOfTeams = async () => {
-        const dataurl = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameId}.l.${leaugeId}?format=json`;
+        const dataurl = `https://fantasysports.yahooapis.com/fantasy/v2/league/${gameId}.l.${leagueId}?format=json`;
 
         const response = await fetch(dataurl, {
             method: 'GET',
@@ -73,15 +79,10 @@ const Test = (props) => {
 
         const rosterData = await response.json();
         const roster = _.get(rosterData, `fantasy_content.team[1].roster['0'].players`);
-        setRoster(roster);
+        const formattedRoster = formatYahooRoster(roster);
+        setRoster(formattedRoster);
+        // TODO STORE OBJECTS IN ASYNCSTORAGE
         AsyncStorage.setItem('roster', JSON.stringify(roster)).then();
-    }
-
-    const printPlayersNames = (players) => {
-        _.forOwn(players, (player) => {
-            console.log(_.get(player, `player[0][2].name.full`, ''));
-        });
-        // console.log(rosterData.fantasy_content.team[1].roster['0'].players['0'].player[0][2].name.full);
     };
 
     useEffect(() => {
@@ -98,69 +99,60 @@ const Test = (props) => {
             await getRoster(profile);
         };
 
-        AsyncStorage.getItem('roster').then((oldRoster) => {
-            if (_.isEmpty(roster)) {
-                setRoster(JSON.parse(oldRoster));
-            }
-        });
-
         if (profile.length !== 0) {
             getRosterAsync();
         }
     }, [profile]);
 
-    const buildRoster = () => {
+    AsyncStorage.getItem('roster').then((oldRoster) => {
         if (_.isEmpty(roster)) {
+            const formattedRoster = formatYahooRoster(JSON.parse(oldRoster));
+            setRoster(formattedRoster);
+        }
+    });
+
+    const buildRoster = () => {
+        if (!_.isArray(roster)) {
             return null;
         }
 
-        const rosterTextNodes = [];
-        _.forOwn(roster, (player) => {
-            const playersName = _.get(player, `player[0][2].name.full`, '');
-            rosterTextNodes.push(<Text key={playersName}>{playersName}</Text>);
+        if (!roster.length) {
+            return null;
+        }
+
+        return roster.map((player) => {
+            return <PlayerCard
+                key={player.name}
+                player={player}
+            />
         });
-        return rosterTextNodes;
     }
+    //
+    // const getPlayerTeamAbbiviated = (player) => {
+    //     const team = _.get(player, `player[0][6].editorial_team_abbr`, '');
+    //
+    //     if (!team) {
+    //         return _.get(player, `player[0][6].editorial_team_full_name`, '')
+    //             .substring(0,3);
+    //     }
+    //
+    //     return team
+    // };
 
     return (
-        <View style={styles.container}>
-            <View stle={styles.form}>
-                <Text>test9</Text>
+        <SafeAreaView style={styles.container}>
+            <ScrollView>
                 {buildRoster()}
-            </View>
-        </View>
+            </ScrollView>
+        </SafeAreaView>
     )
 };
 
 const styles = StyleSheet.create({
-    text: {
-        color: 'black',
-        fontWeight: 'bold',
-    },
     container: {
-        flex: 1,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: 300,
-
-    },
-    form: {
-        marginTop: 300,
-        flex: 1,
-        justifyContent: 'center',
-        width: '80%'
-    },
-    logInButton: {
-        backgroundColor: 'blue',
-        borderColor: 'white',
-        borderWidth: 1,
-        color: 'white',
-        fontSize: 14,
-        overflow: 'hidden',
-        padding: 12,
-        textAlign:'center',
-        marginTop: 20,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+        backgroundColor: '#1b2836',
     },
 });
 
