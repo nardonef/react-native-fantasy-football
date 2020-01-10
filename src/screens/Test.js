@@ -19,11 +19,12 @@ import {Player, formatYahooRoster} from '../models/Player';
 const Test = (props) => {
     const [profile, setProfile] = useState([]);
     const [roster, setRoster] = useState({});
+    const [leagueId, setLeagueId] = useState('');
     const {access_token} = props.navigation.state.params;
-    const leagueId = 717523;
+    // const leagueId = 717523;
     const gameId = 390;
 
-    const getProfile =  async(numberOfTeams) => {
+    const getProfile = async (numberOfTeams) => {
         while (numberOfTeams > 0) {
             const dataurl = `https://fantasysports.yahooapis.com/fantasy/v2/team/${gameId}.l.${leagueId}.t.${numberOfTeams}?format=json`;
 
@@ -86,13 +87,24 @@ const Test = (props) => {
     };
 
     useEffect(() => {
+        const getLeaugeId = async () => {
+            try {
+                setLeagueId(await AsyncStorage.getItem('league_id'))
+            } catch (e) {
+                console.log(e);
+            }
+        };
+        getLeaugeId();
+    }, []);
+
+    useEffect(() => {
         const initGetProfile = async () => {
             const numberOfTeams = await getNumberOfTeams();
             await getProfile(numberOfTeams);
         };
         //TODO ASYNCSTORAGRE
         initGetProfile();
-    }, []);
+    }, [leagueId]);
 
     useEffect(() => {
         const getRosterAsync = async () => {
@@ -127,7 +139,7 @@ const Test = (props) => {
             />
         });
     }
-    //
+
     // const getPlayerTeamAbbiviated = (player) => {
     //     const team = _.get(player, `player[0][6].editorial_team_abbr`, '');
     //
@@ -139,6 +151,7 @@ const Test = (props) => {
     //     return team
     // };
 
+    console.log(leagueId);
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -148,11 +161,22 @@ const Test = (props) => {
     )
 };
 
+// Test.navigationOptions = {
+//     title: 'Home',
+//     headerStyle: {
+//         backgroundColor: '#f4511e',
+//     },
+//     headerTintColor: '#fff',
+//     headerTitleStyle: {
+//         fontWeight: 'bold',
+//     },
+// };
+
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-        backgroundColor: '#1b2836',
+        // backgroundColor: '#1b2836',
     },
 });
 

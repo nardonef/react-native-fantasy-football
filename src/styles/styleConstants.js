@@ -5,6 +5,6 @@ export default {
     // secondaryColor: '#C4BBB8',
     tweetsColor: '#1b2836',
     margin: 20,
-    bigMargin: 40,
+    largeMargin: 50,
     largeText: 20
 }

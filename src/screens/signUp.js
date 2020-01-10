@@ -27,10 +27,12 @@ const SignIn = (props) => {
             password: password,
         })
             .then(data => {
-                console.log(data);
+                AsyncStorage.setItem('user_sub', data.userSub);
                 const {navigate} = props.navigation;
-                navigate('ProfileAuthorization', {
-                    username: username
+                navigate('SetLeagueId', {
+                    userSub: data.userSub,
+                    username: username,
+                    password: password,
                 });
             })
             .catch(err => console.log(err));

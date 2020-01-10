@@ -74,7 +74,7 @@ const ProfileAuthorization = (props) => {
                 const {navigate} = props.navigation;
                 navigate('HomeNavigator', token)
             }
-        }).catch(err => console.error('1Error fetching token', err));
+        }).catch(err => console.error('Error fetching token', err));
     };
 
     const OAuth = async () => {
