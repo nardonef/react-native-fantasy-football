@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import PlayerCard from '../components/PlayerCard';
 import {Player, formatYahooRoster} from '../models/Player';
+import constants from '../constants';
 
 const Test = (props) => {
     const [profile, setProfile] = useState([]);
@@ -22,7 +23,7 @@ const Test = (props) => {
     const [leagueId, setLeagueId] = useState('');
     const {access_token} = props.navigation.state.params;
     // const leagueId = 717523;
-    const gameId = 390;
+    const gameId = constants.gameId;
 
     const getProfile = async (numberOfTeams) => {
         while (numberOfTeams > 0) {
@@ -39,6 +40,7 @@ const Test = (props) => {
             const profileData = _.get(rawProfile, 'fantasy_content.team[0]');
             _.forEach(profileData, (dataElement) => {
                 const isOwner = _.get(dataElement, 'is_owned_by_current_login', false);
+                //console.log(isOwner);
                 if(isOwner) {
                     setProfile(profileData);
                     // AsyncStorage.setItem('profile', JSON.stringify(profileData)).then();
@@ -59,6 +61,7 @@ const Test = (props) => {
             }
         });
         const data = await response.json();
+        console.log(data);
         return _.get(data, 'fantasy_content.league[0].num_teams', 18);
     }
 
@@ -80,9 +83,9 @@ const Test = (props) => {
 
         const rosterData = await response.json();
         const roster = _.get(rosterData, `fantasy_content.team[1].roster['0'].players`);
+        console.log(roster);
         const formattedRoster = formatYahooRoster(roster);
         setRoster(formattedRoster);
-        // TODO STORE OBJECTS IN ASYNCSTORAGE
         AsyncStorage.setItem('roster', JSON.stringify(roster)).then();
     };
 
@@ -94,16 +97,30 @@ const Test = (props) => {
                 console.log(e);
             }
         };
-        getLeaugeId();
+
+        AsyncStorage.getItem('roster')
+            .then((oldRoster) => {
+                if (_.isEmpty(roster) && oldRoster) {
+                    const formattedRoster = formatYahooRoster(JSON.parse(oldRoster));
+                    setRoster(formattedRoster);
+                }
+            })
+            .catch(e => console.log);
+
+        if (leagueId === '') {
+            getLeaugeId();
+        }
     }, []);
 
     useEffect(() => {
         const initGetProfile = async () => {
-            const numberOfTeams = await getNumberOfTeams();
+            const numberOfTeams = await getNumberOfTeams().catch(e => console.log);
             await getProfile(numberOfTeams);
         };
         //TODO ASYNCSTORAGRE
-        initGetProfile();
+        if (leagueId) {
+            initGetProfile();
+        }
     }, [leagueId]);
 
     useEffect(() => {
@@ -112,16 +129,10 @@ const Test = (props) => {
         };
 
         if (profile.length !== 0) {
+            console.log('here');
             getRosterAsync();
         }
     }, [profile]);
-
-    AsyncStorage.getItem('roster').then((oldRoster) => {
-        if (_.isEmpty(roster)) {
-            const formattedRoster = formatYahooRoster(JSON.parse(oldRoster));
-            setRoster(formattedRoster);
-        }
-    });
 
     const buildRoster = () => {
         if (!_.isArray(roster)) {
@@ -140,18 +151,10 @@ const Test = (props) => {
         });
     }
 
-    // const getPlayerTeamAbbiviated = (player) => {
-    //     const team = _.get(player, `player[0][6].editorial_team_abbr`, '');
-    //
-    //     if (!team) {
-    //         return _.get(player, `player[0][6].editorial_team_full_name`, '')
-    //             .substring(0,3);
-    //     }
-    //
-    //     return team
-    // };
+    // console.log(leagueId);
+    // console.log(roster);
+    // console.log(profile);
 
-    console.log(leagueId);
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView>
@@ -161,22 +164,21 @@ const Test = (props) => {
     )
 };
 
-// Test.navigationOptions = {
-//     title: 'Home',
-//     headerStyle: {
-//         backgroundColor: '#f4511e',
-//     },
-//     headerTintColor: '#fff',
-//     headerTitleStyle: {
-//         fontWeight: 'bold',
-//     },
-// };
+Test.defaultProps = {
+    navigation: {
+        state: {
+            params: {
+                access_token: '',
+            }
+        }
+    },
+}
 
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
-        // backgroundColor: '#1b2836',
+        backgroundColor: '#1b2836',
     },
 });
 

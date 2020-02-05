@@ -6,6 +6,8 @@ export const getUser = `query GetUser($id: ID!) {
     id
     userName
     leagueId
+    authToken
+    refreshToken
     owner
   }
 }
@@ -20,6 +22,8 @@ export const listUsers = `query ListUsers(
       id
       userName
       leagueId
+      authToken
+      refreshToken
       owner
     }
     nextToken

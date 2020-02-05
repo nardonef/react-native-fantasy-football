@@ -17,7 +17,7 @@ import YahooFantasyAppImage from '../../assets/yahooFantasyAppLogo.png';
 import {updateUser} from '../graphql/mutations'
 
 const SetLeagueId = (props) => {
-    const {userSub, username, password} = props.navigation.state.params;
+    const {userId, username, password} = props.navigation.state.params;
     const [leagueId, setLeagueId] = useState('');
 
     const submitLeagueId = async () => {
@@ -28,7 +28,7 @@ const SetLeagueId = (props) => {
         try {
             const apiData = await API.graphql(graphqlOperation(updateUser, {
                 input: {
-                    id: userSub,
+                    id: userId,
                     leagueId: leagueId,
                 }
             }));

@@ -6,6 +6,8 @@ export const onCreateUser = `subscription OnCreateUser($owner: String!) {
     id
     userName
     leagueId
+    authToken
+    refreshToken
     owner
   }
 }
@@ -15,6 +17,8 @@ export const onUpdateUser = `subscription OnUpdateUser($owner: String!) {
     id
     userName
     leagueId
+    authToken
+    refreshToken
     owner
   }
 }
@@ -24,6 +28,8 @@ export const onDeleteUser = `subscription OnDeleteUser($owner: String!) {
     id
     userName
     leagueId
+    authToken
+    refreshToken
     owner
   }
 }

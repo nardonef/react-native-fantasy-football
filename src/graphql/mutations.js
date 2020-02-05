@@ -6,6 +6,8 @@ export const createUser = `mutation CreateUser($input: CreateUserInput!) {
     id
     userName
     leagueId
+    authToken
+    refreshToken
     owner
   }
 }
@@ -15,6 +17,8 @@ export const updateUser = `mutation UpdateUser($input: UpdateUserInput!) {
     id
     userName
     leagueId
+    authToken
+    refreshToken
     owner
   }
 }
@@ -24,6 +28,8 @@ export const deleteUser = `mutation DeleteUser($input: DeleteUserInput!) {
     id
     userName
     leagueId
+    authToken
+    refreshToken
     owner
   }
 }

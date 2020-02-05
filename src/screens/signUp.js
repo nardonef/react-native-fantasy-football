@@ -1,15 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import {
     StyleSheet,
     View,
-    Button,
-    Linking,
     AsyncStorage,
     Text,
     Dimensions, TouchableOpacity,
 } from 'react-native'
 import _ from 'lodash';
 import PropTypes from 'prop-types';
+import Button from '../components/button';
 import FormTextInput from '../components/FormTextInput';
 import Amplify, { Auth } from 'aws-amplify';
 import awsconfig from '../../aws-exports';
@@ -27,10 +26,10 @@ const SignIn = (props) => {
             password: password,
         })
             .then(data => {
-                AsyncStorage.setItem('user_sub', data.userSub);
+                AsyncStorage.setItem('user_id', data.userSub);
                 const {navigate} = props.navigation;
                 navigate('SetLeagueId', {
-                    userSub: data.userSub,
+                    userId: data.userSub,
                     username: username,
                     password: password,
                 });
@@ -49,9 +48,7 @@ const SignIn = (props) => {
                 <FormTextInput placeholder={'Email'} onChangeText={setEmail}/>
                 <FormTextInput placeholder={'UserName'} onChangeText={setUsername}/>
                 <FormTextInput placeholder={'Password'} onChangeText={setPassword}/>
-                <Text style={styles.signUpButton} onPress={signUp}>
-                    Sign Up
-                </Text>
+                <Button title={'Sign Up'} style={styles.signUpButton} onPress={signUp}/>
                 <TouchableOpacity onPress={navigateToSignUp} style={styles.signInTouch}>
                     <View style={styles.signIn}>
                         <Text>Already have an Account? </Text>
