@@ -2,6 +2,7 @@ import yahooConfig from "../../yahooConfig";
 import {Base64} from "js-base64";
 import {AsyncStorage, Linking} from "react-native";
 import qs from "qs";
+import {API} from 'aws-amplify';
 
 const REFRESH_TOKEN = 'refresh_token';
 
@@ -54,10 +55,23 @@ const getToken = async (codeOrToken, tokenType) => {
         throw new Error('No token');
     }
 
-    // store refresh_token
-    AsyncStorage.setItem(REFRESH_TOKEN, token.refresh_token);
     return token;
 };
+
+const storeTokens = async (token) => {
+    AsyncStorage.setItem(REFRESH_TOKEN, token.refresh_token);
+    const userId = await AsyncStorage.getItem('user_id');
+    const apiName = 'RestAPI';
+    const path = '/access-key';
+    const params = {
+        body: {
+            accessToken: token.access_token,
+            refreshToken: token.refresh_token,
+            userId: userId
+        },
+    };
+    await API.post(apiName, path, params);
+}
 
 export const OAuth = async (navigator, navigationDestination) => {
     const oauthurl = 'https://api.login.yahoo.com/oauth2/request_auth?' +
@@ -71,17 +85,22 @@ export const OAuth = async (navigator, navigationDestination) => {
     Linking.openURL(oauthurl).catch(err => console.error('Error processing linking', err));
 
     // Listen to redirection
-    function handleUrl(event) {
+    async function handleUrl(event) {
         // Get access_token
         Linking.removeEventListener('url', handleUrl);
         const [, query_string] = event.url.match(/\?(.*)/);
 
         const query = qs.parse(query_string);
 
+        try {
+            const token = await getToken(query.code, 'access_token');
+            await storeTokens(token);
+            navigator(navigationDestination, {access_token: token.access_token});
+        } catch (e) {
+            console.log('oauth: ' + e);
+        }
+
         // if (query.state === state) {
-        getToken(query.code, 'access_token').then((token) => {
-            navigator(navigationDestination, {access_token: token.access_token})
-        });
         // } else {
         //     console.error('Error authorizing oauth redirection');
         // }
@@ -96,5 +115,8 @@ export const checkForRefreshToken = async () => {
         throw new Error('No refresh token');
     }
 
-    return await getToken(refresh_token, 'refresh_token');
+    const token = await getToken(refresh_token, 'refresh_token');
+    await storeTokens(token);
+    // TODO remove
+    return token;
 };

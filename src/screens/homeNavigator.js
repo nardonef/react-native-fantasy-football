@@ -1,10 +1,11 @@
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import Tweets from './twitter';
 import Test from './Test';
+import ViewTeam from './viewTeam';
 
 export default createMaterialBottomTabNavigator(
     {
-        Home: { screen: Test },
+        Home: { screen: ViewTeam },
         Tweets: { screen: Tweets },
     },
     {

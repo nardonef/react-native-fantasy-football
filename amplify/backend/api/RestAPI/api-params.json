@@ -1,0 +1,66 @@
+{
+    "paths": [
+        {
+            "name": "/access-key",
+            "lambdaFunction": "ExpressFantasyAccessKeyProd",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        },
+        {
+            "name": "/league-id",
+            "lambdaFunction": "ExpressFantasyLeagueIdProd",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        }
+    ],
+    "resourceName": "RestAPI",
+    "apiName": "RestAPI",
+    "functionArns": [
+        {
+            "lambdaFunction": "ExpressFantasyAccessKeyProd"
+        },
+        {
+            "lambdaFunction": "ExpressFantasyLeagueIdProd"
+        }
+    ],
+    "privacy": {
+        "auth": 2,
+        "unauth": 0,
+        "authRoleName": "amplify-fantasy-prod-prod-225235-authRole",
+        "unAuthRoleName": "amplify-fantasy-prod-prod-225235-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "ExpressFantasyAccessKeyProd",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        },
+        {
+            "category": "function",
+            "resourceName": "ExpressFantasyLeagueIdProd",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

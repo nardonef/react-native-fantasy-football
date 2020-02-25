@@ -9,7 +9,7 @@ import styleConstants from '../styles/styleConstants';
 
 const InitialRouter = (props) => {
     const {navigate} = props.navigation;
-
+console.log('ir')
     const navigateToHome = () => {
         navigate('HomeNavigator');
     };

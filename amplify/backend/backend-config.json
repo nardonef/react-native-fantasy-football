@@ -1,26 +1,105 @@
 {
 	"auth": {
-		"FootballAmplifyProd": {
+		"fantasyproda0d09a47": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": []
 		}
 	},
-	"api": {
-		"users": {
-			"service": "AppSync",
+	"function": {
+		"ExpressFantasyAccessKeyProd": {
+			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authFootballAmplifyProd"
-						}
-					}
+			"build": true,
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "fantasyproda0d09a47",
+					"attributes": [
+						"UserPoolId"
+					]
 				}
-			}
+			]
+		},
+		"ExpressFantasyLeagueIdProd": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "fantasyproda0d09a47",
+					"attributes": [
+						"UserPoolId"
+					]
+				}
+			]
+		},
+		"ExpressTeamProd": {
+			"service": "Lambda",
+			"providerPlugin": "awscloudformation",
+			"build": true,
+			"dependsOn": [
+				{
+					"category": "auth",
+					"resourceName": "fantasyproda0d09a47",
+					"attributes": [
+						"UserPoolId"
+					]
+				},
+				{
+					"category": "function",
+					"resourceName": "ExpressFantasyAccessKeyProd",
+					"attributes": [
+						"Name"
+					]
+				},
+				{
+					"category": "api",
+					"resourceName": "RestAPI",
+					"attributes": [
+						"ApiName"
+					]
+				}
+			]
+		}
+	},
+	"api": {
+		"RestAPI": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "ExpressFantasyAccessKeyProd",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				},
+				{
+					"category": "function",
+					"resourceName": "ExpressFantasyLeagueIdProd",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		},
+		"team": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "ExpressTeamProd",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
 		}
 	}
 }

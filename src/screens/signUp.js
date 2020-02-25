@@ -6,16 +6,13 @@ import {
     Text,
     Dimensions, TouchableOpacity,
 } from 'react-native'
-import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Button from '../components/button';
 import FormTextInput from '../components/FormTextInput';
-import Amplify, { Auth } from 'aws-amplify';
-import awsconfig from '../../aws-exports';
+import { Auth } from 'aws-amplify';
 import styleConstants from '../styles/styleConstants';
-Amplify.configure(awsconfig);
 
-const SignIn = (props) => {
+const SignUp = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -24,6 +21,9 @@ const SignIn = (props) => {
         Auth.signUp({
             username: username,
             password: password,
+            attributes: {
+                email: email,
+            },
         })
             .then(data => {
                 AsyncStorage.setItem('user_id', data.userSub);
@@ -101,4 +101,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SignIn;
+export default SignUp;

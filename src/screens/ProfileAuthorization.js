@@ -10,6 +10,7 @@ import {
 import PropTypes from 'prop-types';
 import styleConstants from '../styles/styleConstants';
 import {checkForRefreshToken, OAuth} from '../Authentication/yahooAuth';
+import {API} from 'aws-amplify';
 
 const ProfileAuthorization = (props) => {
     const {navigate} = props.navigation;

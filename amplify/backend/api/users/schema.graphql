@@ -1,7 +1,0 @@
-type User @model @auth(rules: [{allow: owner}]) {
-  id: ID!
-  userName: String
-  leagueId: String
-  authToken: String
-  refreshToken: String
-}

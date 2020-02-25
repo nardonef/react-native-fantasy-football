@@ -1,18 +1,19 @@
 {
-    "ffb": {
+    "prod": {
         "awscloudformation": {
-            "AuthRoleName": "football-ffb-20191029213052-authRole",
-            "UnauthRoleArn": "arn:aws:iam::932542346500:role/football-ffb-20191029213052-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::932542346500:role/football-ffb-20191029213052-authRole",
+            "AuthRoleName": "amplify-fantasy-prod-prod-225235-authRole",
+            "UnauthRoleArn": "arn:aws:iam::932542346500:role/amplify-fantasy-prod-prod-225235-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::932542346500:role/amplify-fantasy-prod-prod-225235-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "football-ffb-20191029213052-deployment",
-            "UnauthRoleName": "football-ffb-20191029213052-unauthRole",
-            "StackName": "football-ffb-20191029213052",
-            "StackId": "arn:aws:cloudformation:us-east-1:932542346500:stack/football-ffb-20191029213052/e93da7a0-fab4-11e9-a8c7-0ed7a3d4fec0"
+            "DeploymentBucketName": "amplify-fantasy-prod-prod-225235-deployment",
+            "UnauthRoleName": "amplify-fantasy-prod-prod-225235-unauthRole",
+            "StackName": "amplify-fantasy-prod-prod-225235",
+            "StackId": "arn:aws:cloudformation:us-east-1:932542346500:stack/amplify-fantasy-prod-prod-225235/47ae1a80-495d-11ea-9dc3-126bf0867249",
+            "AmplifyAppId": "d13gpf3ta3hgfp"
         },
         "categories": {
             "auth": {
-                "FootballAmplifyProd": {}
+                "fantasyproda0d09a47": {}
             }
         }
     }

@@ -1,0 +1,129 @@
+{
+    "resource": "/league-id",
+    "path": "/league-id",
+    "httpMethod": "POST",
+    "headers": {
+        "Accept": "application/json, text/plain, */*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en-us",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "US",
+        "content-type": "application/json; charset=UTF-8",
+        "Host": "togev601h0.execute-api.us-east-1.amazonaws.com",
+        "If-None-Match": "W/\"6c-AqEu/5emMowyr0glc9zFJ54zvVQ\"",
+        "User-Agent": "aws-amplify/1.2.3 react-native",
+        "Via": "2.0 77a52be30020596b6a87a26e3dcc75e7.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "iIE2hDCrZ5LuFZkRWoliEt9Z1sMv7B_CEVfMEBjdjxm-Qx8sz0GQeg==",
+        "x-amz-date": "20200214T021805Z",
+        "x-amz-security-token": "IQoJb3JpZ2luX2VjELP//////////wEaCXVzLWVhc3QtMSJIMEYCIQDOKszsYlrmT66u1zV/MtnkqRuXgxTXiV1NvlrAvjBrMgIhAKLkgkyQQxjyCq/hhWNVRdn14fFJFrvK23DLzcVzDBAgKv4DCGsQABoMOTMyNTQyMzQ2NTAwIgxMZB/pCSU2zQUD7hcq2wOIH0uoIGzsSs8x59SqN0n0yBmNL10g2Y0AgGiQh0WRs6PCcFQZiKCultQ+RccqA4kg5ZnNZLcVZGiLf6qaUTNncXa5NGoEP7KMbTcicLGL3PGuUcMRvdc2x7T43U2gf9uEGIEH+3YMDmNEO6KkvecjS8mLWHEp8q9oWFLHFKDrkTt3fW3/SGZXuTJ0aeIZpH9FSLEsBFwG5Q4Kl/2/aylUvESdsZXMhYKT3Hx6aw/aQbJy8UEfAEsLu2XyjNypOZ2YazKYx391CBG5DHUlwhqSQFgQKG8gdqGD8qhlH/lN0fg+DH/RVTlkVhUTUnkd7s5+J6nIk8qqjFHalahB0lLYJyoE05LLPJcXH86p6F4sZzMM42NrgFnh8nPR9n6y8nEBuhRguQQPWoFtl2+4KkrE9LaqH6ddPsZFFeTra73LsnuLxEMU2uuGEvUMfjOZ59CHZnXmhgd/DUUYGmf8gGQ062sRbDONX4EdZn1EbGkWfJtsOEONbFkPxRxQKiG1csYcikcTuIw6c2dkWdaBUbDIXyTuxgA06Ec+C8FilEpbGRWXSJ+hfaxcf32NltyBGYV9nMvdCJItfyIevJvfCaDhfN1cgwHepHjkM15dE+9+Fb9JsfhsKfsvgUXBMNWGmPIFOsoCXeuOdVCPX4oqr5yDOqx0WBA1ED4AjK7Iiex4r56Fx3E0n2OktIPdsVDtGt0ynlSBf9TLqDkiLt9V7r4Lt/CXX3jKXmwYkgB791MUA9/pKDM/RBWMJV72kmoNPOab/fzXUfXeHK/5QWC6fULgVzNzAhYGUNFtFovkwAkG0qxhnWxFsCfLY6pg55zyhwa8AlEDQdI35PRezLnw0iBM5oBRq62ELhDSD4G227+cg3k9a3X+5dZwVjUnngDoBQmwsopiMW5HarOFFMs/jIi3X291odvLN/IXuilgI1hSnQXVUU31gCGcrA9+WssGEfrQ1ppiiDwTek8ioaZUGUae8wrs/174Q1bMSxDbi6NC8Fwh5Wb0fpLyOivfjtoBGVXXBHjBoMpS5QCojsrMO4fIk+A1sROIFheiWsairCZTkgcPsv9miTzrpmscCg0R",
+        "X-Amzn-Trace-Id": "Root=1-5e46035d-4b29f2c0d05a7d11901fa368",
+        "X-Forwarded-For": "72.224.115.198, 70.132.43.140",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "multiValueHeaders": {
+        "Accept": [
+            "application/json, text/plain, */*"
+        ],
+        "Accept-Encoding": [
+            "gzip, deflate, br"
+        ],
+        "Accept-Language": [
+            "en-us"
+        ],
+        "CloudFront-Forwarded-Proto": [
+            "https"
+        ],
+        "CloudFront-Is-Desktop-Viewer": [
+            "true"
+        ],
+        "CloudFront-Is-Mobile-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-SmartTV-Viewer": [
+            "false"
+        ],
+        "CloudFront-Is-Tablet-Viewer": [
+            "false"
+        ],
+        "CloudFront-Viewer-Country": [
+            "US"
+        ],
+        "content-type": [
+            "application/json; charset=UTF-8"
+        ],
+        "Host": [
+            "togev601h0.execute-api.us-east-1.amazonaws.com"
+        ],
+        "If-None-Match": [
+            "W/\"6c-AqEu/5emMowyr0glc9zFJ54zvVQ\""
+        ],
+        "User-Agent": [
+            "aws-amplify/1.2.3 react-native"
+        ],
+        "Via": [
+            "2.0 77a52be30020596b6a87a26e3dcc75e7.cloudfront.net (CloudFront)"
+        ],
+        "X-Amz-Cf-Id": [
+            "iIE2hDCrZ5LuFZkRWoliEt9Z1sMv7B_CEVfMEBjdjxm-Qx8sz0GQeg=="
+        ],
+        "x-amz-date": [
+            "20200214T021805Z"
+        ],
+        "x-amz-security-token": [
+            "IQoJb3JpZ2luX2VjELP//////////wEaCXVzLWVhc3QtMSJIMEYCIQDOKszsYlrmT66u1zV/MtnkqRuXgxTXiV1NvlrAvjBrMgIhAKLkgkyQQxjyCq/hhWNVRdn14fFJFrvK23DLzcVzDBAgKv4DCGsQABoMOTMyNTQyMzQ2NTAwIgxMZB/pCSU2zQUD7hcq2wOIH0uoIGzsSs8x59SqN0n0yBmNL10g2Y0AgGiQh0WRs6PCcFQZiKCultQ+RccqA4kg5ZnNZLcVZGiLf6qaUTNncXa5NGoEP7KMbTcicLGL3PGuUcMRvdc2x7T43U2gf9uEGIEH+3YMDmNEO6KkvecjS8mLWHEp8q9oWFLHFKDrkTt3fW3/SGZXuTJ0aeIZpH9FSLEsBFwG5Q4Kl/2/aylUvESdsZXMhYKT3Hx6aw/aQbJy8UEfAEsLu2XyjNypOZ2YazKYx391CBG5DHUlwhqSQFgQKG8gdqGD8qhlH/lN0fg+DH/RVTlkVhUTUnkd7s5+J6nIk8qqjFHalahB0lLYJyoE05LLPJcXH86p6F4sZzMM42NrgFnh8nPR9n6y8nEBuhRguQQPWoFtl2+4KkrE9LaqH6ddPsZFFeTra73LsnuLxEMU2uuGEvUMfjOZ59CHZnXmhgd/DUUYGmf8gGQ062sRbDONX4EdZn1EbGkWfJtsOEONbFkPxRxQKiG1csYcikcTuIw6c2dkWdaBUbDIXyTuxgA06Ec+C8FilEpbGRWXSJ+hfaxcf32NltyBGYV9nMvdCJItfyIevJvfCaDhfN1cgwHepHjkM15dE+9+Fb9JsfhsKfsvgUXBMNWGmPIFOsoCXeuOdVCPX4oqr5yDOqx0WBA1ED4AjK7Iiex4r56Fx3E0n2OktIPdsVDtGt0ynlSBf9TLqDkiLt9V7r4Lt/CXX3jKXmwYkgB791MUA9/pKDM/RBWMJV72kmoNPOab/fzXUfXeHK/5QWC6fULgVzNzAhYGUNFtFovkwAkG0qxhnWxFsCfLY6pg55zyhwa8AlEDQdI35PRezLnw0iBM5oBRq62ELhDSD4G227+cg3k9a3X+5dZwVjUnngDoBQmwsopiMW5HarOFFMs/jIi3X291odvLN/IXuilgI1hSnQXVUU31gCGcrA9+WssGEfrQ1ppiiDwTek8ioaZUGUae8wrs/174Q1bMSxDbi6NC8Fwh5Wb0fpLyOivfjtoBGVXXBHjBoMpS5QCojsrMO4fIk+A1sROIFheiWsairCZTkgcPsv9miTzrpmscCg0R"
+        ],
+        "X-Amzn-Trace-Id": [
+            "Root=1-5e46035d-4b29f2c0d05a7d11901fa368"
+        ],
+        "X-Forwarded-For": [
+            "72.224.115.198, 70.132.43.140"
+        ],
+        "X-Forwarded-Port": [
+            "443"
+        ],
+        "X-Forwarded-Proto": [
+            "https"
+        ]
+    },
+    "queryStringParameters": null,
+    "multiValueQueryStringParameters": null,
+    "pathParameters": null,
+    "stageVariables": null,
+    "requestContext": {
+        "resourceId": "jsbggy",
+        "resourcePath": "/league-id",
+        "httpMethod": "POST",
+        "extendedRequestId": "H3V2pFzooAMFgPQ=",
+        "requestTime": "14/Feb/2020:02:18:05 +0000",
+        "path": "/prod/league-id",
+        "accountId": "932542346500",
+        "protocol": "HTTP/1.1",
+        "stage": "prod",
+        "domainPrefix": "togev601h0",
+        "requestTimeEpoch": 1581646685675,
+        "requestId": "00d7cce2-18f9-41bc-b4eb-1ab3b5fc85a9",
+        "identity": {
+            "cognitoIdentityPoolId": "us-east-1:9f0f7050-5a41-4634-acf0-965a93af9b93",
+            "accountId": "932542346500",
+            "cognitoIdentityId": "us-east-1:74926395-6dd4-448a-8428-1128d8dd29c3",
+            "caller": "AROA5SH626UCL2ETWKCQZ:CognitoIdentityCredentials",
+            "sourceIp": "72.224.115.198",
+            "principalOrgId": null,
+            "accessKey": "ASIA5SH626UCG5TPHOND",
+            "cognitoAuthenticationType": "authenticated",
+            "cognitoAuthenticationProvider": "cognito-idp.us-east-1.amazonaws.com/us-east-1_iywIib5J6,cognito-idp.us-east-1.amazonaws.com/us-east-1_iywIib5J6:CognitoSignIn:267949b1-b9e2-4862-af3c-72f2c58e5f94",
+            "userArn": "arn:aws:sts::932542346500:assumed-role/amplify-fantasy-prod-prod-225235-authRole/CognitoIdentityCredentials",
+            "userAgent": "aws-amplify/1.2.3 react-native",
+            "user": "AROA5SH626UCL2ETWKCQZ:CognitoIdentityCredentials"
+        },
+        "domainName": "togev601h0.execute-api.us-east-1.amazonaws.com",
+        "apiId": "togev601h0"
+    },
+    "body": "{\"userId\":\"267949b1-b9e2-4862-af3c-72f2c58e5f94\",\"leagueId\":\"1230\"}",
+    "isBase64Encoded": false
+}

@@ -1,0 +1,12 @@
+{
+    "permissions": {
+        "auth": {
+            "fantasyproda0d09a47": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}

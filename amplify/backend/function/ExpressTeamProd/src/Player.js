@@ -97,5 +97,5 @@ const formatYahooRoster = (roster) => {
     return formattedRoster;
 };
 
-
-export {Player, formatYahooRoster}
+module.exports.Player = Player;
+module.exports.formatYahooRoster = formatYahooRoster;

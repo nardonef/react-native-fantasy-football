@@ -12,9 +12,8 @@ import PropTypes from 'prop-types';
 import FormTextInput from '../components/FormTextInput';
 import ErrorText from '../components/errorText';
 import styleConstants from '../styles/styleConstants';
-import { API, graphqlOperation, Auth } from 'aws-amplify'
+import { API, Auth } from 'aws-amplify'
 import YahooFantasyAppImage from '../../assets/yahooFantasyAppLogo.png';
-import {updateUser} from '../graphql/mutations'
 
 const SetLeagueId = (props) => {
     const {userId, username, password} = props.navigation.state.params;
@@ -26,18 +25,20 @@ const SetLeagueId = (props) => {
         }
 
         try {
-            const apiData = await API.graphql(graphqlOperation(updateUser, {
-                input: {
-                    id: userId,
+            const apiName = 'RestAPI';
+            const path = '/league-id';
+            const params = {
+                body: {
+                    userId: userId,
                     leagueId: leagueId,
-                }
-            }));
-            console.log(apiData);
+                },
+            };
+            await API.post(apiName, path, params);
             AsyncStorage.setItem('league_id', leagueId);
             const {navigate} = props.navigation;
             navigate('ProfileAuthorization');
         } catch (e) {
-            console.log(e.errors);
+            console.log(e);
         }
     };
 

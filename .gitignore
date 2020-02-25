@@ -69,4 +69,6 @@ dist/
 node_modules/
 aws-exports.js
 awsconfiguration.json
-yahooConfig.json
+amplifyconfiguration.json
+amplify-gradle-config.json
+amplifyxc.config

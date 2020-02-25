@@ -16,8 +16,11 @@ import ProfileAuthorization from './screens/ProfileAuthorization'
 import Test from './screens/Test';
 import HomeNavigator from './screens/homeNavigator';
 import SignUp from './screens/signUp';
-import LandingPage from './screens/landingPage';
 import InitialRouter from './screens/initialRouter';
+import Amplify from 'aws-amplify';
+import awsconfig from '../aws-exports';
+
+Amplify.configure(awsconfig);
 
 const AppNavigator = createStackNavigator(
     {
@@ -28,7 +31,6 @@ const AppNavigator = createStackNavigator(
         Test: Test,
         HomeNavigator: HomeNavigator,
         SignUp: SignUp,
-        LandingPage: LandingPage,
         InitialRouter: InitialRouter,
     },
     {

@@ -11,12 +11,9 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Button from '../components/button';
 import FormTextInput from '../components/FormTextInput';
-import Amplify, { Auth, API, graphqlOperation } from 'aws-amplify';
-import {getUser} from '../graphql/queries'
-import awsconfig from '../../aws-exports';
+import {Auth, API} from 'aws-amplify';
 import styleConstants from '../styles/styleConstants';
 import {checkForRefreshToken} from '../Authentication/yahooAuth';
-Amplify.configure(awsconfig);
 
 const SignIn = (props) => {
     const {navigate} = props.navigation;
@@ -25,22 +22,36 @@ const SignIn = (props) => {
 
     const signIn = async () => {
         try {
+            // Sign in / get userId
             const userData = await Auth.signIn(username, password);
             const userId = _.get(userData, 'attributes.sub', null);
             AsyncStorage.setItem('user_id', userId);
-            const apiData = await API.graphql(graphqlOperation(getUser, {id: userId}));
-            const leagueId = _.get(apiData, 'data.getUser.leagueId', null);
 
-            if (!leagueId) {
-                navigate('SetLeagueId', {
-                    userSub: userId
-                });
-            }
+            // get leaugeId
+            // const apiName = 'RestAPI';
+            // const path = '/league-id';
+            // const params = {
+            //     queryStringParameters: {
+            //         userId: userId,
+            //     },
+            // };
+            // const response = await API.get(apiName, path, params);
+            // const leagueId = _.get(response, 'leagueId', '');
+            // if (!leagueId) {
+            //     navigate('SetLeagueId', {
+            //         userId: userId
+            //     });
+            //     return;
+            // }
+            // AsyncStorage.setItem('league_id', leagueId);
 
-            AsyncStorage.setItem('league_id', leagueId);
+
+            //check for token
             const token = await checkForRefreshToken();
+            // TODO remove
             navigate('HomeNavigator', {access_token: token.access_token})
         } catch (e) {
+            console.log(e);
             if (e.message === 'No refresh token') {
                 navigate('ProfileAuthorization');
             }
