@@ -9,13 +9,12 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import PlayerCard from '../components/PlayerCard';
 import {API} from 'aws-amplify';
-import HamburgerMenu from 'react-hamburger-menu';
 
 const ViewTeam = (props) => {
     const [team, setTeam] = useState([]);
     useEffect(() => {
         const apiName = 'team';
-        const path = '/team';
+        const path = '/team/data';
         API.get(apiName, path)
             .then((response) => {
                 setTeam(response.data);
@@ -44,15 +43,6 @@ const ViewTeam = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <HamburgerMenu
-                width={18}
-                height={15}
-                strokeWidth={1}
-                rotate={0}
-                color='black'
-                borderRadius={0}
-                animationDuration={0.5}
-            />
             <ScrollView>
                 {buildRoster()}
             </ScrollView>

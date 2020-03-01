@@ -28,23 +28,10 @@ const SignIn = (props) => {
             AsyncStorage.setItem('user_id', userId);
 
             // get leaugeId
-            // const apiName = 'RestAPI';
-            // const path = '/league-id';
-            // const params = {
-            //     queryStringParameters: {
-            //         userId: userId,
-            //     },
-            // };
-            // const response = await API.get(apiName, path, params);
-            // const leagueId = _.get(response, 'leagueId', '');
-            // if (!leagueId) {
-            //     navigate('SetLeagueId', {
-            //         userId: userId
-            //     });
-            //     return;
-            // }
-            // AsyncStorage.setItem('league_id', leagueId);
-
+            // const apiName = 'team';
+            // const path = '/team/data';
+            // const response = await API.get(apiName, path);
+            // console.log(response);
 
             //check for token
             const token = await checkForRefreshToken();

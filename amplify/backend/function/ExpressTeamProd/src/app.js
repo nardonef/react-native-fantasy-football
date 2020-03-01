@@ -61,7 +61,18 @@ const getTeam = async (userId) => {
     const roster = rawRoster.map(player => player.toObject());
     console.log(roster);
     return roster;
-}
+};
+
+const getData = async  () => {
+    const s3 = new AWS.S3();
+
+    const params = {
+        Bucket: "nfl-data-fantasy",
+        Key: "playerData.json"
+    };
+
+    return await s3.getObject(params).promise();
+};
 
 /**********************
  * Example get method *
@@ -72,7 +83,7 @@ app.get('/team', async function(req, res) {
     console.log(userId);
 
     try {
-        const roster = getTeam(userId);
+        const roster = await getTeam(userId);
         console.log(roster);
         res.json({
             data: roster,
@@ -86,15 +97,37 @@ app.get('/team', async function(req, res) {
 
 });
 
-app.get('/team/data', function(req, res) {
+app.get('/team/data', async function(req, res) {
+    console.log('getting team with data');
     const userId = getUserIdFromRequest(req);
     console.log(userId);
-
     try {
-        const roster = getTeam(userId);
-        console.log(roster);
+        // GET ROSTER
+        const roster = await getTeam(userId);
+
+        // GET PLAYER DATA
+        const data = await getData();
+        const fileContents = data.Body.toString();
+        const allPlayersData = JSON.parse(fileContents);
+        console.log(allPlayersData.playerStatsTotals);
+
+        const playersWithData = [];
+        allPlayersData.playerStatsTotals.forEach((playerData) => {
+            if (playerData.position === 'DEF') {
+                console.log(playerData);
+            }
+
+            const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`
+
+            roster.forEach((player) => {
+                if (player.name === dataPlayerName) {
+                    player.stats = playerData;
+                    playersWithData.push(player);
+                }
+            });
+        });
         res.json({
-            data: roster,
+            data: playersWithData,
         });
     } catch (e) {
         console.log(e);
@@ -102,8 +135,6 @@ app.get('/team/data', function(req, res) {
             error: e,
         });
     }
-  // Add your code here
-  res.json({success: 'get call succeed!', url: req.url});
 });
 
 /****************************
