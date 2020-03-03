@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import {
     StyleSheet,
     SafeAreaView,
@@ -12,7 +12,15 @@ import {API} from 'aws-amplify';
 
 const ViewTeam = (props) => {
     const [team, setTeam] = useState([]);
+    // const [scrollPosition, setScrollPosition] = useState(0);
+    const scrollViewRef = useRef();
+
+
     useEffect(() => {
+        if(team.length !== 0) {
+            return;
+        }
+
         const apiName = 'team';
         const path = '/team/data';
         API.get(apiName, path)
@@ -33,10 +41,29 @@ const ViewTeam = (props) => {
             return null;
         }
 
+        // console.log(team);
+
+        // team.sort((a, b) => {
+        //     console.log(a.position);
+        //     if (a.position === 'QB') {
+        //         return -1;
+        //     }
+        //
+        //     if (b.position === 'K') {
+        //         return -1;
+        //     }
+        // });
+
+        // console.log(team);
+
         return team.map((player) => {
             return <PlayerCard
                 key={player.name}
                 player={player}
+                stats={player.stats}
+                // scrollPosition={scrollPosition}
+                // setScrollPosition={setScrollPosition}
+                scrollViewRef={scrollViewRef}
             />
         });
     };
@@ -63,8 +90,9 @@ ViewTeam.defaultProps = {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
+        height: Dimensions.get('window').height-88,
         backgroundColor: '#1b2836',
+
     },
 });
 
