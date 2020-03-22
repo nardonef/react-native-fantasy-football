@@ -9,6 +9,8 @@ class Player {
         this._fullTeamName = _.get(rawPlayerData, 'fullTeamName', '');
         this._abbreviatedTeamName = _.get(rawPlayerData, 'abbreviatedTeamName', '');
         this._picture = _.get(rawPlayerData, 'picture', '');
+        this._injuryStatus = _.get(rawPlayerData, 'injuryStatus', '');
+        this._fantasyRosterPosition = _.get(rawPlayerData, 'fantasyRosterPosition', '');
     }
 
     get name() {
@@ -35,6 +37,14 @@ class Player {
         return this._picture;
     }
 
+    get injuryStatus() {
+        return this._injuryStatus;
+    }
+
+    get fantasyRosterPosition() {
+        return this._fantasyRosterPosition;
+    }
+
     toObject() {
         return {
             name: this.name,
@@ -42,7 +52,9 @@ class Player {
             position: this.position,
             fullTeamName: this.fullTeamName,
             abbreviatedTeamName: this.abbreviatedTeamName,
-            picture: this.picture
+            picture: this.picture,
+            injuryStatus: this.injuryStatus,
+            fantasyRosterPosition: this.fantasyRosterPosition
         };
     }
 }
@@ -88,6 +100,10 @@ const formatYahooRoster = (roster) => {
 
             if (playerData.hasOwnProperty('image_url')) {
                 unformattedPlayer.picture = playerData.image_url;
+            }
+
+            if (playerData.hasOwnProperty('status')) {
+                unformattedPlayer.injuryStatus = playerData.status;
             }
         });
 

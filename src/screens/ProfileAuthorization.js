@@ -1,16 +1,13 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {
     StyleSheet,
     View,
-    Button,
-    Linking,
-    AsyncStorage,
-    Text, Dimensions,
+    Text,
+    Dimensions,
 } from 'react-native'
 import PropTypes from 'prop-types';
 import styleConstants from '../styles/styleConstants';
 import {checkForRefreshToken, OAuth} from '../Authentication/yahooAuth';
-import {API} from 'aws-amplify';
 
 const ProfileAuthorization = (props) => {
     const {navigate} = props.navigation;

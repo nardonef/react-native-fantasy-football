@@ -1,6 +1,5 @@
-import React, {useEffect, useState} from 'react'
-import {StyleSheet, Text, Dimensions} from 'react-native'
-import _ from 'lodash';
+import React from 'react'
+import {StyleSheet, Text} from 'react-native'
 import PropTypes from 'prop-types';
 import styleConstants from '../styles/styleConstants';
 
@@ -15,7 +14,7 @@ const Button = (props) => {
 const styles = StyleSheet.create({
     logInButton: {
         backgroundColor: styleConstants.secondaryColor,
-        color: 'white',
+        color: styleConstants.tweetsColor,
         fontSize: 14,
         overflow: 'hidden',
         padding: 12,
@@ -24,6 +23,7 @@ const styles = StyleSheet.create({
         width: '70%',
         borderRadius: 5,
         borderWidth: 1,
+        fontWeight: 'bold'
     }
 });
 

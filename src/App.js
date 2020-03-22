@@ -13,7 +13,6 @@ import Twitter from './screens/twitter';
 import SetLeagueId from './screens/setLeagueId'
 import SignIn from './screens/signIn';
 import ProfileAuthorization from './screens/ProfileAuthorization'
-import Test from './screens/Test';
 import HomeNavigator from './screens/homeNavigator';
 import SignUp from './screens/signUp';
 import InitialRouter from './screens/initialRouter';
@@ -28,7 +27,6 @@ const AppNavigator = createStackNavigator(
         SetLeagueId: SetLeagueId,
         SignIn: SignIn,
         ProfileAuthorization: ProfileAuthorization,
-        Test: Test,
         HomeNavigator: HomeNavigator,
         SignUp: SignUp,
         InitialRouter: InitialRouter,

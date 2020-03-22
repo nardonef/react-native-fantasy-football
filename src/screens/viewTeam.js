@@ -1,20 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
     StyleSheet,
     SafeAreaView,
     ScrollView,
-    Dimensions
+    Dimensions,
+    View
 } from 'react-native'
 import _ from 'lodash';
-import PropTypes from 'prop-types';
-import PlayerCard from '../components/PlayerCard';
+import PlayerInfo from '../components/scrollablePlayerList/playerInfo';
+import PlayerStats from '../components/scrollablePlayerList/playerStats';
+import StatFilterHeader from '../components/scrollablePlayerList/statFilterHeader';
 import {API} from 'aws-amplify';
 
-const ViewTeam = (props) => {
+const ViewTeam = () => {
     const [team, setTeam] = useState([]);
-    // const [scrollPosition, setScrollPosition] = useState(0);
-    const scrollViewRef = useRef();
-
 
     useEffect(() => {
         if(team.length !== 0) {
@@ -32,7 +31,7 @@ const ViewTeam = (props) => {
             });
     }, []);
 
-    const buildRoster = () => {
+    const buildPlayerInfo = () => {
         if (!_.isArray(team)) {
             return null;
         }
@@ -41,59 +40,65 @@ const ViewTeam = (props) => {
             return null;
         }
 
-        // console.log(team);
+        return team.map((player) => {
+            return <PlayerInfo key={player.name} player={player}/>
+        });
+    };
 
-        // team.sort((a, b) => {
-        //     console.log(a.position);
-        //     if (a.position === 'QB') {
-        //         return -1;
-        //     }
-        //
-        //     if (b.position === 'K') {
-        //         return -1;
-        //     }
-        // });
+    const buildPlayerStats = () => {
+        if (!_.isArray(team)) {
+            return null;
+        }
 
-        // console.log(team);
+        if (!team.length) {
+            return null;
+        }
 
         return team.map((player) => {
-            return <PlayerCard
-                key={player.name}
-                player={player}
-                stats={player.stats}
-                // scrollPosition={scrollPosition}
-                // setScrollPosition={setScrollPosition}
-                scrollViewRef={scrollViewRef}
-            />
+            return <PlayerStats stats={player.stats}/>
         });
+    };
+
+    // TODO
+    const sortTeam = () => {
+
     };
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView>
-                {buildRoster()}
+            <StatFilterHeader/>
+            <ScrollView horizontal={false}>
+                <View style={styles.verticalScroll}>
+                    <View style={styles.playerInfoContainer}>
+                        {buildPlayerInfo()}
+                    </View>
+                    <ScrollView style={styles.playerStatsContainer}>
+                        {buildPlayerStats()}
+                    </ScrollView>
+                </View>
             </ScrollView>
         </SafeAreaView>
     )
 };
-
-ViewTeam.defaultProps = {
-    navigation: {
-        state: {
-            params: {
-                access_token: '',
-            }
-        }
-    },
-}
 
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height-88,
         backgroundColor: '#1b2836',
-
     },
+    verticalScroll: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    playerInfoContainer: {
+        flex: 1,
+    },
+    playerStatsContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        marginLeft: -50,
+    }
 });
 
 export default ViewTeam;

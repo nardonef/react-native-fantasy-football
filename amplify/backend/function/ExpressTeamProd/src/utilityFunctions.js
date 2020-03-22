@@ -68,7 +68,13 @@ const getRoster = async (accessToken, profile) => {
 
     const rosterData = await response.json();
     const roster = _.get(rosterData, `fantasy_content.team[1].roster['0'].players`);
-    console.log(roster);
+    _.forOwn(roster, (rosterArray) => {
+        if (typeof rosterArray === 'object' && rosterArray !== null) {
+            rosterArray.player.forEach((x) => {
+                console.log(x);
+            });
+        }
+    });
     return formatYahooRoster(roster);
 };
 

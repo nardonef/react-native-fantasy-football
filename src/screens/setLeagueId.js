@@ -2,11 +2,9 @@ import React, {useEffect, useState} from 'react'
 import {
     StyleSheet,
     View,
-    Button,
-    Linking,
     AsyncStorage,
     Text,
-    Dimensions, TouchableOpacity, Image, SafeAreaView
+    Dimensions, Image, SafeAreaView
 } from 'react-native'
 import PropTypes from 'prop-types';
 import FormTextInput from '../components/FormTextInput';

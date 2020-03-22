@@ -83,16 +83,6 @@ const styles = StyleSheet.create({
         backgroundColor: styleConstants.backgroundColor,
     },
     logInButton: {
-        backgroundColor: styleConstants.secondaryColor,
-        color: 'white',
-        fontSize: 14,
-        overflow: 'hidden',
-        padding: 12,
-        textAlign:'center',
-        marginTop: styleConstants.margin,
-        width: '70%',
-        borderRadius:5,
-        borderWidth: 1,
         height: 42,
     },
     signUpTouch: {

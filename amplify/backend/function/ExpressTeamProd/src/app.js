@@ -109,7 +109,7 @@ app.get('/team/data', async function(req, res) {
         const data = await getData();
         const fileContents = data.Body.toString();
         const allPlayersData = JSON.parse(fileContents);
-        console.log(allPlayersData.playerStatsTotals);
+        // console.log(allPlayersData.playerStatsTotals);
 
         const playersWithData = [];
         allPlayersData.playerStatsTotals.forEach((playerData) => {
