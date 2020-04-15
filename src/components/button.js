@@ -5,14 +5,14 @@ import styleConstants from '../styles/styleConstants';
 
 const Button = (props) => {
     return (
-        <Text style={[styles.logInButton, props.style]} onPress={props.onPress}>
+        <Text style={[styles.button, props.style]} onPress={props.onPress}>
             {props.title}
         </Text>
     )
 };
 
 const styles = StyleSheet.create({
-    logInButton: {
+    button: {
         backgroundColor: styleConstants.secondaryColor,
         color: styleConstants.tweetsColor,
         fontSize: 14,

@@ -8,7 +8,6 @@ const StatFilterHeader = (props) => {
     const [modalVisible, setModalVisible] = useState(false);
 
     const filterOnClick = () => {
-        console.log('clicked')
         setModalVisible(true);
     };
 
@@ -18,10 +17,11 @@ const StatFilterHeader = (props) => {
                 isVisible={modalVisible}
                 testID={'modal'}
                 onSwipeComplete={() => setModalVisible(false)}
-                swipeDirection={['up', 'left', 'right', 'down']}
+                // swipeDirection={['left', 'right']}
                 style={styles.modal}
+                propagateSwipe={true}
             >
-                <SeasonFilter/>
+                <SeasonFilter closeModal={() => setModalVisible(false)}/>
             </Modal>
             <Button onPress={filterOnClick} title={'Season'} style={styles.button}/>
             <Button onPress={filterOnClick} title={'Total'} style={styles.button}/>

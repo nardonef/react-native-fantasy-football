@@ -34,7 +34,6 @@ const getProfile = async (accessToken, leagueId, numberOfTeams) => {
     }
 
     return data;
-
 };
 
 const getNumberOfTeams = async (accessToken, leagueId) => {
@@ -68,14 +67,87 @@ const getRoster = async (accessToken, profile) => {
 
     const rosterData = await response.json();
     const roster = _.get(rosterData, `fantasy_content.team[1].roster['0'].players`);
-    _.forOwn(roster, (rosterArray) => {
-        if (typeof rosterArray === 'object' && rosterArray !== null) {
-            rosterArray.player.forEach((x) => {
-                console.log(x);
-            });
-        }
-    });
+    // _.forOwn(roster, (rosterArray) => {
+    //     if (typeof rosterArray === 'object' && rosterArray !== null) {
+    //         rosterArray.player.forEach((x) => {
+    //             console.log(x);
+    //         });
+    //     }
+    // });
     return formatYahooRoster(roster);
+};
+
+const getFreeAgents = async (accessToken, leagueId) => {
+    let start = 0;
+    let done= false;
+    const freeAgents = [];
+    const promises = [];
+    while (!done) {
+        const dataUrl = `${urlBase}/league/${gameId}.l.${leagueId}/players;start=${start}?format=json`;
+
+        const response = await fetch(dataUrl, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+
+        const data = await response.json();
+
+        // _.forOwn(data.fantasy_content.league[1].players, (player) => {
+        //     if (typeof player !== 'object' || player === null) {
+        //         return;
+        //     }
+        //
+        //     console.log(player.player[0]);
+        // });
+
+        freeAgents.push(...formatYahooRoster(data.fantasy_content.league[1].players));
+
+        if (data.fantasy_content.league[1].players.count !== 25) {
+            done=true;
+        }
+
+        start = start +25;
+    }
+
+    return freeAgents;
+};
+
+getFreeAgentsYahoo = async (accessToken, leagueId) => {
+    let start = 0;
+    let done= false;
+    const freeAgents = [];
+    while (!done) {
+        const dataUrl = `${urlBase}/league/${gameId}.l.${leagueId}/players;start=${start}?format=json`;
+
+        const response = await fetch(dataUrl, {
+            method: 'GET',
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        });
+
+        const data = await response.json();
+
+        // _.forOwn(data.fantasy_content.league[1].players, (player) => {
+        //     if (typeof player !== 'object' || player === null) {
+        //         return;
+        //     }
+        //
+        //     console.log(player.player[0]);
+        // });
+
+        freeAgents.push(formatYahooRoster(data.fantasy_content.league[1].players));
+        console.log(freeAgents);
+        if (data.fantasy_content.league[1].players.count !== 25) {
+            done=true;
+        }
+
+        start = start +25;
+    }
+
+    return freeAgents;
 };
 
 const getUserIdFromRequest = (req) => {
@@ -110,4 +182,4 @@ module.exports.getUserIdFromRequest = getUserIdFromRequest;
 module.exports.getProfile = getProfile;
 module.exports.getNumberOfTeams = getNumberOfTeams;
 module.exports.getRoster = getRoster;
-
+module.exports.getFreeAgents = getFreeAgents;

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {
     StyleSheet,
     View,
@@ -20,6 +20,14 @@ const SignIn = (props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
+    useEffect(() => {
+        Auth.currentAuthenticatedUser()
+            .then(() => navigate('HomeNavigator'))
+            .catch((e) => {
+                console.log(e);
+            });
+    }, []);
+
     const signIn = async () => {
         try {
             // Sign in / get userId
@@ -27,18 +35,9 @@ const SignIn = (props) => {
             const userId = _.get(userData, 'attributes.sub', null);
             AsyncStorage.setItem('user_id', userId);
 
-            // get leaugeId
-            // const apiName = 'team';
-            // const path = '/team/data';
-            // const response = await API.get(apiName, path);
-            // console.log(response);
-
-            //check for token
-            const token = await checkForRefreshToken();
-            // TODO remove
-            navigate('HomeNavigator', {access_token: token.access_token})
+            navigate('HomeNavigator')
         } catch (e) {
-            console.log(e);
+            console.log(e.message);
             if (e.message === 'No refresh token') {
                 navigate('ProfileAuthorization');
             }

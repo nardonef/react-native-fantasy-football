@@ -67,7 +67,9 @@ const formatYahooRoster = (roster) => {
             return;
         }
 
-        const unformattedPlayer = {};
+        const unformattedPlayer = {
+            fantasyRosterPosition: _.get(player, 'player[1].selected_position[1].position', ''),
+        };
 
         _.forEach(player.player[0], (playerData) => {
             if(typeof player !== "object") {
@@ -112,6 +114,7 @@ const formatYahooRoster = (roster) => {
 
     return formattedRoster;
 };
+
 
 module.exports.Player = Player;
 module.exports.formatYahooRoster = formatYahooRoster;

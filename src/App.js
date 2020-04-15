@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
@@ -34,6 +26,9 @@ const AppNavigator = createStackNavigator(
     {
         initialRouteName: 'SignIn',
         headerMode: 'none',
+        defaultNavigationOptions: {
+            gesturesEnabled: false
+        }
     }
 );
 

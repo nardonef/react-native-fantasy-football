@@ -10,10 +10,9 @@ import _ from 'lodash';
 import PlayerInfo from '../components/scrollablePlayerList/playerInfo';
 import PlayerStats from '../components/scrollablePlayerList/playerStats';
 import StatFilterHeader from '../components/scrollablePlayerList/statFilterHeader';
-import {API, Auth} from 'aws-amplify';
+import {API} from 'aws-amplify';
 
-
-const ViewTeam = (props) => {
+const ViewWaiverWire = () => {
     const [team, setTeam] = useState([]);
 
     useEffect(() => {
@@ -22,14 +21,14 @@ const ViewTeam = (props) => {
         }
 
         const apiName = 'team';
-        const path = '/team/data';
+        const path = '/team/waiver-wire';
         API.get(apiName, path)
             .then((response) => {
                 console.log(response);
                 setTeam(response.data);
             })
             .catch((e) => {
-                console.log(JSON.stringify(e));
+                console.log(e);
             });
     }, []);
 
@@ -63,15 +62,12 @@ const ViewTeam = (props) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <StatFilterHeader navigation={props.navigation}/>
+            <StatFilterHeader/>
             <ScrollView horizontal={false}>
                 <View style={styles.verticalScroll}>
                     <View style={styles.playerInfoContainer}>
                         {buildPlayerInfo()}
                     </View>
-                    <ScrollView style={styles.playerStatsContainer}>
-                        {buildPlayerStats()}
-                    </ScrollView>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -98,4 +94,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ViewTeam;
+export default ViewWaiverWire;

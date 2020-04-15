@@ -36,6 +36,7 @@ app.use(function(req, res, next) {
   next()
 });
 
+const teamOrder = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'BN'];
 
 const {
     getNumberOfTeams,
@@ -43,6 +44,7 @@ const {
     getRoster,
     getUserIdFromRequest,
     getUser,
+    getFreeAgents
 } = require('./utilityFunctions');
 
 const getTeam = async (userId) => {
@@ -50,17 +52,35 @@ const getTeam = async (userId) => {
     const accessKey = _.get(user, 'yahooAccessKey', '');
     const leagueId = _.get(user, 'leagueId', '');
 
-    console.log(leagueId);
-    console.log(accessKey);
+    // console.log(leagueId);
+    // console.log(accessKey);
 
     const numberOfTeams = await getNumberOfTeams(accessKey, leagueId);
-    console.log(numberOfTeams);
+    // console.log(numberOfTeams);
+
     const profile = await getProfile(accessKey, leagueId, numberOfTeams);
-    console.log(profile);
+    // console.log(profile);
+
     const rawRoster = await getRoster(accessKey, profile);
     const roster = rawRoster.map(player => player.toObject());
-    console.log(roster);
-    return roster;
+    // console.log(roster);
+
+    const sortedRoster = sortRoster(roster);
+    // console.log(sortedRoster);
+
+    return sortedRoster;
+};
+
+const sortRoster = (roster) => {
+    const sortedRoster = [];
+    teamOrder.forEach((position) => {
+        roster.forEach((player) => {
+            if(player.fantasyRosterPosition === position) {
+                sortedRoster.push(player)
+            }
+        });
+    });
+    return sortedRoster;
 };
 
 const getData = async  () => {
@@ -84,13 +104,12 @@ app.get('/team', async function(req, res) {
 
     try {
         const roster = await getTeam(userId);
-        console.log(roster);
         res.json({
             data: roster,
         });
     } catch (e) {
         console.log(e);
-        res.json({
+        res.error({
             error: e,
         });
     }
@@ -109,7 +128,6 @@ app.get('/team/data', async function(req, res) {
         const data = await getData();
         const fileContents = data.Body.toString();
         const allPlayersData = JSON.parse(fileContents);
-        // console.log(allPlayersData.playerStatsTotals);
 
         const playersWithData = [];
         allPlayersData.playerStatsTotals.forEach((playerData) => {
@@ -117,7 +135,7 @@ app.get('/team/data', async function(req, res) {
                 console.log(playerData);
             }
 
-            const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`
+            const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`;
 
             roster.forEach((player) => {
                 if (player.name === dataPlayerName) {
@@ -126,24 +144,37 @@ app.get('/team/data', async function(req, res) {
                 }
             });
         });
+        const sortedPlayersWithData = sortRoster(playersWithData);
         res.json({
-            data: playersWithData,
+            data: sortedPlayersWithData,
         });
     } catch (e) {
         console.log(e);
-        res.json({
+        res.error({
             error: e,
         });
     }
 });
 
-/****************************
-* Example post method *
-****************************/
+//TODO change to free agents
+app.get('/team/waiver-wire', async function(req, res) {
+    try {
+        const userId = getUserIdFromRequest(req);
+        const user = await getUser(AWS, userId);
+        const accessKey = _.get(user, 'yahooAccessKey', '');
+        const leagueId = _.get(user, 'leagueId', '');
+        const freeAgents = await getFreeAgents(accessKey, leagueId);
+        const freeAgentsResponse = freeAgents.map(player => player.toObject());
+        res.json({
+            data: freeAgentsResponse,
+        })
+    } catch (e) {
+        console.log(e);
+        res.error({
+            error: e,
+        });
+    }
 
-app.post('/team', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
 });
 
 app.post('/team/*', function(req, res) {

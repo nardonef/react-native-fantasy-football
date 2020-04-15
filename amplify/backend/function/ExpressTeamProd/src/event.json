@@ -1,6 +1,6 @@
 {
-    "resource": "/team/data",
-    "path": "/team/data",
+    "resource": "/team/waiver-wire",
+    "path": "/team/waiver-wire",
     "httpMethod": "GET",
     "headers": {
         "Accept": "application/json, text/plain, */*",
@@ -98,11 +98,11 @@
     "stageVariables": null,
     "requestContext": {
         "resourceId": "jsbggy",
-        "resourcePath": "/team/data",
+        "resourcePath": "/team/waiver-wire",
         "httpMethod": "GET",
         "extendedRequestId": "H3aG5Eo8oAMFglg=",
         "requestTime": "14/Feb/2020:02:47:08 +0000",
-        "path": "/prod/team/data",
+        "path": "/prod/team/waiver-wire",
         "accountId": "932542346500",
         "protocol": "HTTP/1.1",
         "stage": "prod",

@@ -32,7 +32,10 @@ const FilterOption = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10,
+        paddingTop: 2,
+        paddingBottom: 2,
+        paddingLeft: 10,
+        paddingRight:10,
         borderBottomColor: "black",
         borderBottomWidth: .3,
         flexDirection: 'row',

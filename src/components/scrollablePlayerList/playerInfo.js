@@ -5,6 +5,7 @@ import {
     Text,
     Image,
 } from 'react-native'
+import StyleConsts from "../../styles/styleConstants";
 
 const PlayerInfo = (props) => {
     const buildName = () => {
@@ -17,8 +18,34 @@ const PlayerInfo = (props) => {
         return `${nameArray[0].charAt(0)}. ${nameArray[1]}`;
     };
 
+    const backgroundStyle = (theme) => {
+        if (theme === 'dark') {
+            return {
+                backgroundColor: StyleConsts.tweetsColor,
+                borderBottomColor: "white",
+            }
+        }
+
+        return {
+            backgroundColor: 'white',
+            borderBottomColor: StyleConsts.tweetsColor,
+        }
+    };
+
+    const textColorStyle = (theme) => {
+        if (theme === 'dark') {
+            return {
+                color: 'white',
+            }
+        }
+
+        return {
+            color: StyleConsts.tweetsColor,
+        }
+    };
+
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, backgroundStyle(props.theme)]}>
             <View style={styles.profileImageContainer}>
                 <Image
                     style={styles.profileImage}
@@ -26,10 +53,10 @@ const PlayerInfo = (props) => {
                 />
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.name}>{buildName()}</Text>
+                <Text style={[styles.name, textColorStyle(props.theme)]}>{buildName()}</Text>
                 <View style={styles.bottomSection}>
-                    <Text style={styles.bottomSectionText}>{props.player.abbreviatedTeamName}</Text>
-                    <Text style={styles.bottomSectionText}>{props.player.position}</Text>
+                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>{props.player.abbreviatedTeamName}</Text>
+                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>{props.player.position}</Text>
                 </View>
             </View>
         </View>
@@ -55,7 +82,6 @@ const styles = StyleSheet.create({
     container: {
         borderBottomColor: "white",
         borderBottomWidth: .3,
-        backgroundColor: "#1b2836",
         flexDirection: 'row',
         height: 60 ,
         paddingTop: 5,
@@ -75,5 +101,15 @@ const styles = StyleSheet.create({
         paddingRight: 10,
     }
 });
+
+PlayerInfo.defaultProps = {
+    player: {
+        name: '',
+        picture: '',
+        abbreviatedTeamName: '',
+        position: '',
+    },
+    theme: 'light',
+};
 
 export default PlayerInfo;

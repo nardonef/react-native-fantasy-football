@@ -84,7 +84,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-fantasy-prod-prod-225235-deployment",
-					"S3Key": "amplify-builds/ExpressTeamProd-6938506b763462385855-build.zip"
+					"S3Key": "amplify-builds/ExpressTeamProd-547564476d75744f6457-build.zip"
 				}
 			}
 		},
