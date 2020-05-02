@@ -8,8 +8,8 @@ import styleConstants from '../styles/styleConstants';
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 const TeamScrollerHeader = (props) => {
-    const screenNames = ['Your Team','Wavier Wire', 'Other'];
-    const screens = ['ViewTeamScreen', 'ViewWaiverWireScreen', 'ViewTeamScreen'];
+    const screenNames = ['Your Team','Wavier Wire'];
+    const screens = ['ViewTeamScreen', 'ViewWaiverWireScreen'];
 
     const [currentScreen, setCurrentScreen] = useState(0);
 
@@ -26,7 +26,7 @@ const TeamScrollerHeader = (props) => {
     };
 
     const handleRightPress = () => {
-        if (currentScreen === 2) {
+        if (currentScreen === 1) {
             return;
         }
 

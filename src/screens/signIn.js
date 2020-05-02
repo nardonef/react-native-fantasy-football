@@ -22,6 +22,7 @@ const SignIn = (props) => {
 
     useEffect(() => {
         Auth.currentAuthenticatedUser()
+            // TODO CHECK USER ID MATCHES ID IN ASYNCSTORAGE
             .then(() => navigate('HomeNavigator'))
             .catch((e) => {
                 console.log(e);
@@ -35,12 +36,26 @@ const SignIn = (props) => {
             const userId = _.get(userData, 'attributes.sub', null);
             AsyncStorage.setItem('user_id', userId);
 
+            // const apiName = 'team';
+            // const path = '/team/data/weekly';
+            // const options = {
+            //     queryStringParameters: {
+            //         week: 1,
+            //     },
+            // };
+            // API.get(apiName, path, options)
+            //     .then(console.log)
+            //     .catch((e) => {
+            //         console.log(JSON.stringify(e));
+            //     });
+
             navigate('HomeNavigator')
         } catch (e) {
-            console.log(e.message);
-            if (e.message === 'No refresh token') {
-                navigate('ProfileAuthorization');
-            }
+            // TODO FIX
+            // console.log(e.message);
+            // if (e.message === 'No refresh token') {
+            //     navigate('ProfileAuthorization');
+            // }
         }
     };
 

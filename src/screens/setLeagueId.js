@@ -32,23 +32,12 @@ const SetLeagueId = (props) => {
                 },
             };
             await API.post(apiName, path, params);
-            AsyncStorage.setItem('league_id', leagueId);
             const {navigate} = props.navigation;
             navigate('ProfileAuthorization');
         } catch (e) {
             console.log(e);
         }
     };
-
-    useEffect(() => {
-        if (!username) {
-            return;
-        }
-
-        Auth.signIn(username, password)
-            .then(data => console.log(data))
-            .catch(err => console.log(err));
-    }, []);
 
     return (
         <SafeAreaView style={styles.background}>

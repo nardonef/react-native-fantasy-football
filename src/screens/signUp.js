@@ -28,10 +28,12 @@ const SignUp = (props) => {
             .then(data => {
                 AsyncStorage.setItem('user_id', data.userSub);
                 const {navigate} = props.navigation;
-                navigate('SetLeagueId', {
-                    userId: data.userSub,
-                    username: username,
-                    password: password,
+                Auth.signIn(username, password).then(() => {
+                    navigate('SetLeagueId', {
+                        userId: data.userSub,
+                        username: username,
+                        password: password,
+                    });
                 });
             })
             .catch(err => console.log(err));

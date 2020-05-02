@@ -34,6 +34,7 @@ const getToken = async (codeOrToken, tokenType) => {
     const tokenurl = `https://api.login.yahoo.com/oauth2/get_token`;
     const authcode = Base64.encode(`${yahooConfig.client_id}:${yahooConfig.client_secret}`);
 
+    console.log(new URLSearchParams(bodyJson).toString());
     let token = null;
     try {
         const response = await fetch(tokenurl, {
@@ -59,7 +60,9 @@ const getToken = async (codeOrToken, tokenType) => {
 };
 
 const storeTokens = async (token) => {
+    // TODO REMOVE
     AsyncStorage.setItem(REFRESH_TOKEN, token.refresh_token);
+
     const userId = await AsyncStorage.getItem('user_id');
     const apiName = 'RestAPI';
     const path = '/access-key';
@@ -71,7 +74,7 @@ const storeTokens = async (token) => {
         },
     };
     await API.post(apiName, path, params);
-}
+};
 
 export const OAuth = async (navigator, navigationDestination) => {
     const oauthurl = 'https://api.login.yahoo.com/oauth2/request_auth?' +
@@ -107,16 +110,4 @@ export const OAuth = async (navigator, navigationDestination) => {
     }
 
     Linking.addEventListener('url', handleUrl);
-};
-
-export const checkForRefreshToken = async () => {
-    const refresh_token = await AsyncStorage.getItem(REFRESH_TOKEN);
-    if (!refresh_token) {
-        throw new Error('No refresh token');
-    }
-
-    const token = await getToken(refresh_token, 'refresh_token');
-    await storeTokens(token);
-    // TODO remove
-    return token;
 };

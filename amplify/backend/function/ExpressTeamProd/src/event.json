@@ -1,6 +1,6 @@
 {
-    "resource": "/team/waiver-wire",
-    "path": "/team/waiver-wire",
+    "resource": "/team/data/weekly",
+    "path": "/team/data/weekly",
     "httpMethod": "GET",
     "headers": {
         "Accept": "application/json, text/plain, */*",
@@ -87,7 +87,8 @@
         ]
     },
     "queryStringParameters": {
-        "userId": "7993fe0d-33a9-4b22-b2a1-3f5b66baaaa8"
+        "userId": "7993fe0d-33a9-4b22-b2a1-3f5b66baaaa8",
+        "week": "1"
     },
     "multiValueQueryStringParameters": {
         "userId": [
@@ -98,11 +99,11 @@
     "stageVariables": null,
     "requestContext": {
         "resourceId": "jsbggy",
-        "resourcePath": "/team/waiver-wire",
+        "resourcePath": "/team/data/weekly",
         "httpMethod": "GET",
         "extendedRequestId": "H3aG5Eo8oAMFglg=",
         "requestTime": "14/Feb/2020:02:47:08 +0000",
-        "path": "/prod/team/waiver-wire",
+        "path": "/prod/team/data/weekly",
         "accountId": "932542346500",
         "protocol": "HTTP/1.1",
         "stage": "prod",

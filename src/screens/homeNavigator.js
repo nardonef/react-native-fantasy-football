@@ -1,12 +1,13 @@
 import React from "react";
 import Tweets from './twitter';
-import ViewTeam from './viewTeam';
+import {ViewTeam} from './viewTeam';
 import styleConstants from '../styles/styleConstants';
 import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
 import {createStackNavigator} from 'react-navigation-stack'
 import EntypoIcon from "react-native-vector-icons/Entypo";
 import ViewWaiverWire from './viewWaiverWire';
 import AntDesignIcon from "react-native-vector-icons/AntDesign";
+import MaterialIconsIcon from "react-native-vector-icons/MaterialIcons";
 import Header from '../components/header';
 import TeamScrollerHeader from '../components/teamScrollerHeader'
 import HomePage from '../screens/homePage'
@@ -64,17 +65,31 @@ const DashboardTabRoutes = createMaterialBottomTabNavigator(
             }
         },
         Tab2: {
+            screen: ViewPlayersStackView,
+            navigationOptions: {
+                tabBarLabel: ' ',
+                tabBarIcon: () => (<AntDesignIcon name="pushpin" size={20} color={'white'}/>),
+            }
+        },
+        Tab3: {
             screen: HomeScreen,
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: () => (<EntypoIcon name="home" size={20} color={'white'}/>),
             }
         },
-        Tab3: {
+        Tab4: {
             screen: TweetsScreen,
             navigationOptions: {
                 tabBarLabel: ' ',
                 tabBarIcon: () => (<EntypoIcon name="twitter" size={20} color={'white'}/>),
+            }
+        },
+        Tab5: {
+            screen: TweetsScreen,
+            navigationOptions: {
+                tabBarLabel: ' ',
+                tabBarIcon: () => (<MaterialIconsIcon name="settings" size={20} color={'white'}/>),
             }
         },
     },
@@ -82,7 +97,7 @@ const DashboardTabRoutes = createMaterialBottomTabNavigator(
         initialRouteName: "Tab1",
         barStyle: {
             backgroundColor: styleConstants.backgroundColor,
-            height: 50
+            height: 60
         }
     }
 );

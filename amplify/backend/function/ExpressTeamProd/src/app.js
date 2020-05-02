@@ -36,6 +36,22 @@ app.use(function(req, res, next) {
   next()
 });
 
+app.use(async function (req, res, next) {
+    const userId = getUserIdFromRequest(req);
+    const user = await getUser(AWS, userId);
+    console.log(user);
+    const leagueId = _.get(user, 'leagueId', '');
+    const refreshKey = _.get(user, 'yahooRefreshKey', '');
+    console.log(userId);
+    console.log(leagueId);
+
+    const token = await refreshToken(userId, refreshKey);
+
+    _.set(req, 'token', token);
+    _.set(req, 'leagueId', leagueId);
+    next();
+});
+
 const teamOrder = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'BN'];
 
 const {
@@ -44,17 +60,11 @@ const {
     getRoster,
     getUserIdFromRequest,
     getUser,
-    getFreeAgents
+    getFreeAgents,
+    refreshToken
 } = require('./utilityFunctions');
 
-const getTeam = async (userId) => {
-    const user = await getUser(AWS, userId);
-    const accessKey = _.get(user, 'yahooAccessKey', '');
-    const leagueId = _.get(user, 'leagueId', '');
-
-    // console.log(leagueId);
-    // console.log(accessKey);
-
+const getTeam = async (accessKey, leagueId) => {
     const numberOfTeams = await getNumberOfTeams(accessKey, leagueId);
     // console.log(numberOfTeams);
 
@@ -83,46 +93,50 @@ const sortRoster = (roster) => {
     return sortedRoster;
 };
 
-const getData = async  () => {
+const getData = async  (week) => {
     const s3 = new AWS.S3();
 
-    const params = {
+    let params = {
         Bucket: "nfl-data-fantasy",
         Key: "playerData.json"
     };
 
+    if (week) {
+        params.Bucket = `nfl-week-${week}-data-fantasy`
+    }
+
     return await s3.getObject(params).promise();
 };
 
-/**********************
- * Example get method *
- **********************/
-
 app.get('/team', async function(req, res) {
-    const userId = getUserIdFromRequest(req);
-    console.log(userId);
+    // const userId = getUserIdFromRequest(req);
+    // const user = await getUser(AWS, userId);
+    // console.log(user);
+    // const accessKey = _.get(user, 'yahooAccessKey', '');
+    // const leagueId = _.get(user, 'leagueId', '');
+    // const refreshKey = _.get(user, 'yahooRefreshKey', '');
+    // console.log(userId);
+    // console.log(accessKey);
+    // console.log(leagueId);
+    //
+    // const token = await refreshToken(userId, refreshKey);
 
     try {
-        const roster = await getTeam(userId);
+        const roster = await getTeam(req.token.access_token, req.leagueId);
         res.json({
             data: roster,
         });
     } catch (e) {
         console.log(e);
-        res.error({
-            error: e,
-        });
+        res.status(500).send(e)
     }
 
 });
 
 app.get('/team/data', async function(req, res) {
-    console.log('getting team with data');
-    const userId = getUserIdFromRequest(req);
-    console.log(userId);
     try {
         // GET ROSTER
-        const roster = await getTeam(userId);
+        const roster = await getTeam(req.token.access_token, req.leagueId);
 
         // GET PLAYER DATA
         const data = await getData();
@@ -131,10 +145,6 @@ app.get('/team/data', async function(req, res) {
 
         const playersWithData = [];
         allPlayersData.playerStatsTotals.forEach((playerData) => {
-            if (playerData.position === 'DEF') {
-                console.log(playerData);
-            }
-
             const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`;
 
             roster.forEach((player) => {
@@ -150,64 +160,84 @@ app.get('/team/data', async function(req, res) {
         });
     } catch (e) {
         console.log(e);
-        res.error({
-            error: e,
-        });
+        res.status(500).send(e)
     }
 });
+
+app.get('/team/data/weekly', async function(req, res) {
+    console.log(req.query);
+    const week = _.get(req.query, 'week', null);
+
+    if (!week) {
+        res.status(500).send({
+            error: 'no week query string param'
+        })
+    }
+
+    try {
+        // GET ROSTER
+        const roster = await getTeam(req.token.access_token, req.leagueId);
+
+        // GET PLAYER DATA
+        const data = await getData(week);
+        const fileContents = data.Body.toString();
+        const allPlayersData = JSON.parse(fileContents);
+        const playersWithData = [];
+        allPlayersData.gamelogs.forEach((playerData) => {
+            const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`;
+
+            roster.forEach((player) => {
+                if (player.name === dataPlayerName) {
+                    player.stats = playerData;
+                    playersWithData.push(player);
+                }
+            });
+        });
+
+        // Seems that either there are either players missing from the data set or
+        // if a player didn't play on a week they are not included in the data set
+        // this is so we have the full roster in the response
+        roster.forEach((rosterPlayer) => {
+            let inResponse = false;
+            playersWithData.forEach((player) => {
+                if (rosterPlayer.name === player.name) {
+                    inResponse = true;
+                }
+            });
+
+            if (!inResponse) {
+                playersWithData.push(rosterPlayer);
+            }
+        });
+
+        const sortedPlayersWithData = sortRoster(playersWithData);
+        res.json({
+            data: sortedPlayersWithData,
+        });
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e)
+    }
+});
+
 
 //TODO change to free agents
 app.get('/team/waiver-wire', async function(req, res) {
     try {
-        const userId = getUserIdFromRequest(req);
-        const user = await getUser(AWS, userId);
-        const accessKey = _.get(user, 'yahooAccessKey', '');
-        const leagueId = _.get(user, 'leagueId', '');
-        const freeAgents = await getFreeAgents(accessKey, leagueId);
+        // const userId = getUserIdFromRequest(req);
+        // const user = await getUser(AWS, userId);
+        // const accessKey = _.get(user, 'yahooAccessKey', '');
+        // const leagueId = _.get(user, 'leagueId', '');
+        const freeAgents = await getFreeAgents(req.token.access_token, req.leagueId);
         const freeAgentsResponse = freeAgents.map(player => player.toObject());
         res.json({
             data: freeAgentsResponse,
         })
     } catch (e) {
         console.log(e);
-        res.error({
-            error: e,
-        });
+        res.status(500).send(e)
     }
 
-});
-
-app.post('/team/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'post call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example put method *
-****************************/
-
-app.put('/team', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-app.put('/team/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'put call succeed!', url: req.url, body: req.body})
-});
-
-/****************************
-* Example delete method *
-****************************/
-
-app.delete('/team', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
-});
-
-app.delete('/team/*', function(req, res) {
-  // Add your code here
-  res.json({success: 'delete call succeed!', url: req.url});
 });
 
 app.listen(3000, function() {

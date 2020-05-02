@@ -16,20 +16,7 @@ const Card = (props) => {
     return (
         <View style={styles.container}>
             <Text style={styles.titleText}>{props.title}</Text>
-            <PlayerInfo player={
-                {
-                    name: 'Frank Nardone',
-                    abbreviatedTeamName: 'NYJ',
-                    position: 'RB'
-                }}
-            />
-            <PlayerInfo player={
-                {
-                    name: 'Frank Nardone',
-                    abbreviatedTeamName: 'NYJ',
-                    position: 'RB'
-                }}
-            />
+            {props.children}
             <View style={styles.arrowContainer}>
                 <Icon
                     // onPress={handleLeftPress}
@@ -47,15 +34,17 @@ const styles = StyleSheet.create({
     container: {
         width: '90%',
         height: 190,
-        backgroundColor: '#d05d39',
+        backgroundColor: '#d8b075',
         marginTop: StyleConsts.margin,
         marginBottom: StyleConsts.margin,
+        borderRadius: 10,
     },
     titleText: {
         fontSize: StyleConsts.largeText,
         marginLeft: StyleConsts.smallMargin,
         marginBottom: StyleConsts.smallMargin,
         marginTop: 5,
+        fontWeight: '700'
     },
     arrowContainer: {
         alignItems: 'center',

@@ -7,7 +7,7 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types';
 import styleConstants from '../styles/styleConstants';
-import {checkForRefreshToken, OAuth} from '../Authentication/yahooAuth';
+import {OAuth} from '../Authentication/yahooAuth';
 
 const ProfileAuthorization = (props) => {
     const {navigate} = props.navigation;
@@ -15,14 +15,6 @@ const ProfileAuthorization = (props) => {
     const auth = async () => {
         await OAuth(navigate, 'HomeNavigator');
     };
-
-    useEffect(() => {
-        checkForRefreshToken()
-            .then((token) => {
-                navigate('HomeNavigator', {access_token: token.access_token})
-            })
-            .catch(() =>{});
-    }, []);
 
     return (
         <View style={styles.screen}>
