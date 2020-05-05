@@ -17,7 +17,7 @@ const Stat = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        width: 90,
+        width: 66,
         marginRight: 10,
         justifyContent: 'center',
         alignItems: 'center'

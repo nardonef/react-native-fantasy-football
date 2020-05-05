@@ -19,28 +19,23 @@ const ViewTeam = (props) => {
     const [team, setTeam] = useState([]);
     const [viewTeamState, setViewTeamState] = useState({
         week: '0',
+        position: 'all'
     });
 
-    console.log(viewTeamState);
-
     useEffect(() => {
-        // if(team.length !== 0) {
-        //     return;
-        // }
-
-        console.log('api call fired');
-
         const apiName = 'team';
         let path = '/team/data';
-        let options = {};
+        let options = {
+            queryStringParameters: {},
+        };
 
         if (viewTeamState.week !== '0') {
-            path = '/team/data/weekly';
-            options = {
-                queryStringParameters: {
-                    week: viewTeamState.week,
-                },
-            };
+            options.queryStringParameters.week = viewTeamState.week;
+        }
+
+        if (viewTeamState.position !== 'all') {
+            options.queryStringParameters.position = viewTeamState.position;
+
         }
 
         API.get(apiName, path, options)
@@ -51,7 +46,7 @@ const ViewTeam = (props) => {
             .catch((e) => {
                 console.log(JSON.stringify(e));
             });
-    }, [viewTeamState.week]);
+    }, [viewTeamState.week, viewTeamState.position]);
 
     const buildPlayerInfo = () => {
         if (!_.isArray(team)) {
@@ -77,7 +72,10 @@ const ViewTeam = (props) => {
         }
 
         return team.map((player) => {
-            return <PlayerStats stats={_.get(player, 'stats', {})}/>
+            return <PlayerStats
+                position={player.position}
+                stats={_.get(player, 'stats', {})}
+            />
         });
     };
 

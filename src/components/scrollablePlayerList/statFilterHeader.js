@@ -3,8 +3,8 @@ import {StyleSheet, View, Text} from 'react-native'
 import Modal from "react-native-modal";
 import Button from "../button";
 import SeasonFilter from "./filterModals/seasonFilter"
-import RankingFilter from "./filterModals/rankingFilter"
-// import {ViewTeamContext} from '../../screens/viewTeam'
+import PositionFilter from "./filterModals/positionFilter"
+import {ViewTeamContext} from '../../screens/viewTeam'
 import _ from 'lodash';
 import StyleConsts from "../../styles/styleConstants";
 
@@ -14,21 +14,21 @@ const StatFilterHeader = (props) => {
     const [modalComponent, setModalComponent] = useState(null);
     const [trendsButtonActive, setTrendsButtonActive] = useState(false);
     const [rankingButtonActive, setRankingButtonActive] = useState(false);
-    // const [viewTeamState, setViewTeamState] = useContext(ViewTeamContext);
+    const [viewTeamState, setViewTeamState] = useContext(ViewTeamContext);
 
 
     const weekClick = () => {
-        setModalComponent(<SeasonFilter closeModal={() => setModalVisible(false)}/>)
+        setModalComponent(<SeasonFilter closeModal={() => setModalVisible(false)}/>);
         setModalVisible(true);
     };
 
-    const rankingClick = () => {
+    const positionClick = () => {
         if (rankingButtonActive) {
             setRankingButtonActive(false);
             return;
         }
 
-        setModalComponent(<RankingFilter closeModal={() => setModalVisible(false)}/>)
+        setModalComponent(<PositionFilter closeModal={() => setModalVisible(false)}/>);
         setModalVisible(true);
         setRankingButtonActive(true);
     };
@@ -40,6 +40,14 @@ const StatFilterHeader = (props) => {
         }
 
         setTrendsButtonActive(true);
+    };
+
+    const renderWeekLabel = () => {
+        if (viewTeamState.week === '0') {
+            return 'All Season';
+        }
+
+        return `Week ${viewTeamState.week}`
     };
 
     return (
@@ -54,9 +62,21 @@ const StatFilterHeader = (props) => {
             >
                 {modalComponent}
             </Modal>
-            <Button onPress={weekClick} title={'Week'} style={styles.activeButton}/>
-            <Button onPress={rankingClick} title={'Ranking'} style={rankingButtonActive ? styles.activeButton: styles.button}/>
-            <Button onPress={trendsClick} title={'Trends'} style={trendsButtonActive ? styles.activeButton: styles.button}/>
+            <Button
+                onPress={weekClick}
+                title={renderWeekLabel()}
+                style={styles.activeButton}
+            />
+            <Button
+                onPress={positionClick}
+                title={viewTeamState.position === 'all' ? 'Position': viewTeamState.position}
+                style={viewTeamState.position === 'all' ? styles.button: styles.activeButton}
+            />
+            <Button
+                onPress={trendsClick}
+                title={'Trends'}
+                style={trendsButtonActive ? styles.activeButton: styles.button}
+            />
         </View>
     )
 };

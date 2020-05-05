@@ -1,6 +1,6 @@
 {
-    "resource": "/team/data/weekly",
-    "path": "/team/data/weekly",
+    "resource": "/team/data",
+    "path": "/team/data",
     "httpMethod": "GET",
     "headers": {
         "Accept": "application/json, text/plain, */*",
@@ -99,11 +99,11 @@
     "stageVariables": null,
     "requestContext": {
         "resourceId": "jsbggy",
-        "resourcePath": "/team/data/weekly",
+        "resourcePath": "/team/data",
         "httpMethod": "GET",
         "extendedRequestId": "H3aG5Eo8oAMFglg=",
         "requestTime": "14/Feb/2020:02:47:08 +0000",
-        "path": "/prod/team/data/weekly",
+        "path": "/prod/team/data",
         "accountId": "932542346500",
         "protocol": "HTTP/1.1",
         "stage": "prod",

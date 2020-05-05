@@ -52,7 +52,7 @@ app.use(async function (req, res, next) {
     next();
 });
 
-const teamOrder = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'BN'];
+const teamOrder = ['QB', 'RB', 'WR', 'TE', 'W/R/T', 'K', 'DEF', 'BN'];
 
 const {
     getNumberOfTeams,
@@ -101,26 +101,21 @@ const getData = async  (week) => {
         Key: "playerData.json"
     };
 
+    let dataProperty = 'playerStatsTotals';
+
     if (week) {
-        params.Bucket = `nfl-week-${week}-data-fantasy`
+        params.Bucket = `nfl-week-${week}-data-fantasy`;
+        dataProperty = 'gamelogs';
     }
 
-    return await s3.getObject(params).promise();
+    const data = await s3.getObject(params).promise();
+    const fileContents = data.Body.toString();
+    const allPlayersData = JSON.parse(fileContents);
+
+    return allPlayersData[dataProperty];
 };
 
 app.get('/team', async function(req, res) {
-    // const userId = getUserIdFromRequest(req);
-    // const user = await getUser(AWS, userId);
-    // console.log(user);
-    // const accessKey = _.get(user, 'yahooAccessKey', '');
-    // const leagueId = _.get(user, 'leagueId', '');
-    // const refreshKey = _.get(user, 'yahooRefreshKey', '');
-    // console.log(userId);
-    // console.log(accessKey);
-    // console.log(leagueId);
-    //
-    // const token = await refreshToken(userId, refreshKey);
-
     try {
         const roster = await getTeam(req.token.access_token, req.leagueId);
         res.json({
@@ -130,49 +125,11 @@ app.get('/team', async function(req, res) {
         console.log(e);
         res.status(500).send(e)
     }
-
 });
 
 app.get('/team/data', async function(req, res) {
-    try {
-        // GET ROSTER
-        const roster = await getTeam(req.token.access_token, req.leagueId);
-
-        // GET PLAYER DATA
-        const data = await getData();
-        const fileContents = data.Body.toString();
-        const allPlayersData = JSON.parse(fileContents);
-
-        const playersWithData = [];
-        allPlayersData.playerStatsTotals.forEach((playerData) => {
-            const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`;
-
-            roster.forEach((player) => {
-                if (player.name === dataPlayerName) {
-                    player.stats = playerData;
-                    playersWithData.push(player);
-                }
-            });
-        });
-        const sortedPlayersWithData = sortRoster(playersWithData);
-        res.json({
-            data: sortedPlayersWithData,
-        });
-    } catch (e) {
-        console.log(e);
-        res.status(500).send(e)
-    }
-});
-
-app.get('/team/data/weekly', async function(req, res) {
-    console.log(req.query);
     const week = _.get(req.query, 'week', null);
-
-    if (!week) {
-        res.status(500).send({
-            error: 'no week query string param'
-        })
-    }
+    const position = _.get(req.query, 'position', null);
 
     try {
         // GET ROSTER
@@ -180,14 +137,18 @@ app.get('/team/data/weekly', async function(req, res) {
 
         // GET PLAYER DATA
         const data = await getData(week);
-        const fileContents = data.Body.toString();
-        const allPlayersData = JSON.parse(fileContents);
+
         const playersWithData = [];
-        allPlayersData.gamelogs.forEach((playerData) => {
+        data.forEach((playerData) => {
             const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`;
 
             roster.forEach((player) => {
                 if (player.name === dataPlayerName) {
+                    if (position) {
+                        if (player.position !== position) {
+                            return;
+                        }
+                    }
                     player.stats = playerData;
                     playersWithData.push(player);
                 }
@@ -198,6 +159,12 @@ app.get('/team/data/weekly', async function(req, res) {
         // if a player didn't play on a week they are not included in the data set
         // this is so we have the full roster in the response
         roster.forEach((rosterPlayer) => {
+            if (position) {
+                if (rosterPlayer.position !== position) {
+                    return;
+                }
+            }
+
             let inResponse = false;
             playersWithData.forEach((player) => {
                 if (rosterPlayer.name === player.name) {
@@ -219,6 +186,61 @@ app.get('/team/data/weekly', async function(req, res) {
         res.status(500).send(e)
     }
 });
+
+// app.get('/team/data/weekly', async function(req, res) {
+//
+//
+//     if (!week) {
+//         res.status(500).send({
+//             error: 'no week query string param'
+//         })
+//     }
+//
+//     try {
+//         // GET ROSTER
+//         const roster = await getTeam(req.token.access_token, req.leagueId);
+//
+//         // GET PLAYER DATA
+//         const data = await getData(week);
+//         const fileContents = data.Body.toString();
+//         const allPlayersData = JSON.parse(fileContents);
+//         const playersWithData = [];
+//         allPlayersData.gamelogs.forEach((playerData) => {
+//             const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`;
+//
+//             roster.forEach((player) => {
+//                 if (player.name === dataPlayerName) {
+//                     player.stats = playerData;
+//                     playersWithData.push(player);
+//                 }
+//             });
+//         });
+//
+//         // Seems that either there are either players missing from the data set or
+//         // if a player didn't play on a week they are not included in the data set
+//         // this is so we have the full roster in the response
+//         roster.forEach((rosterPlayer) => {
+//             let inResponse = false;
+//             playersWithData.forEach((player) => {
+//                 if (rosterPlayer.name === player.name) {
+//                     inResponse = true;
+//                 }
+//             });
+//
+//             if (!inResponse) {
+//                 playersWithData.push(rosterPlayer);
+//             }
+//         });
+//
+//         const sortedPlayersWithData = sortRoster(playersWithData);
+//         res.json({
+//             data: sortedPlayersWithData,
+//         });
+//     } catch (e) {
+//         console.log(e);
+//         res.status(500).send(e)
+//     }
+// });
 
 
 //TODO change to free agents
@@ -247,4 +269,4 @@ app.listen(3000, function() {
 // Export the app object. When executing the application local this does nothing. However,
 // to port it to AWS Lambda we will create a wrapper around that will load the app from
 // this file
-module.exports = app
+module.exports = app;

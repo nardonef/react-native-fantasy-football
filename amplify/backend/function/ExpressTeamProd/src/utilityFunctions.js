@@ -85,7 +85,6 @@ const getFreeAgents = async (accessToken, leagueId) => {
     let start = 0;
     let done= false;
     const freeAgents = [];
-    const promises = [];
     while (!done) {
         const dataUrl = `${urlBase}/league/${gameId}.l.${leagueId}/players;start=${start}?format=json`;
 
@@ -98,17 +97,13 @@ const getFreeAgents = async (accessToken, leagueId) => {
 
         const data = await response.json();
 
-        // _.forOwn(data.fantasy_content.league[1].players, (player) => {
-        //     if (typeof player !== 'object' || player === null) {
-        //         return;
-        //     }
-        //
-        //     console.log(player.player[0]);
-        // });
-
         freeAgents.push(...formatYahooRoster(data.fantasy_content.league[1].players));
 
-        if (data.fantasy_content.league[1].players.count !== 25) {
+        // if (data.fantasy_content.league[1].players.count !== 25) {
+        //     done=true;
+        // }
+
+        if (start > 99) {
             done=true;
         }
 

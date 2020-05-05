@@ -44,25 +44,42 @@ const PlayerInfo = (props) => {
         }
     };
 
+    const renderPosition = (position) => {
+        if (position === 'W/R/T') {
+            return 'FLEX';
+        }
+        return position
+    };
+
     return (
         <View style={[styles.container, backgroundStyle(props.theme)]}>
             <View style={styles.profileImageContainer}>
+                <View style={styles.fantasyRosterPosition}>
+                    <Text style={styles.fantasyRosterPositionText}>
+                        {renderPosition(props.player.fantasyRosterPosition)}
+                    </Text>
+                </View>
                 <Image
                     style={styles.profileImage}
                     source={{uri: props.player.picture}}
                 />
             </View>
             <View style={styles.textContainer}>
-                <Text style={[styles.name, textColorStyle(props.theme)]}>{buildName()}</Text>
+                <Text style={[styles.name, textColorStyle(props.theme)]}>
+                    {buildName()}
+                </Text>
                 <View style={styles.bottomSection}>
-                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>{props.player.abbreviatedTeamName}</Text>
-                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>{props.player.position}</Text>
+                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
+                        {props.player.abbreviatedTeamName}
+                    </Text>
+                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
+                        {props.player.position}
+                    </Text>
                 </View>
             </View>
         </View>
     )
 };
-
 
 const styles = StyleSheet.create({
     bottomSection: {
@@ -76,15 +93,14 @@ const styles = StyleSheet.create({
         marginRight: 3,
     },
     textContainer: {
-        paddingLeft: 10,
-        paddingTop: 5,
+        paddingLeft: 1,
+        paddingTop: 13,
     },
     container: {
         borderBottomColor: "white",
         borderBottomWidth: .3,
         flexDirection: 'row',
-        height: 60 ,
-        paddingTop: 5,
+        height: 70 ,
     },
     name: {
         fontWeight: 'bold',
@@ -93,12 +109,23 @@ const styles = StyleSheet.create({
     },
     profileImage: {
         height: 50,
-        width: 50,
+        width: 45,
         borderRadius:40,
     },
     profileImageContainer: {
-        paddingLeft: 10,
-        paddingRight: 10,
+        paddingRight: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    fantasyRosterPosition: {
+        width: 40,
+        textAlign: 'center',
+        alignItems: 'center',
+    },
+    fantasyRosterPositionText: {
+        fontWeight: 'bold',
+        color: 'white',
+        fontSize: 12,
     }
 });
 
