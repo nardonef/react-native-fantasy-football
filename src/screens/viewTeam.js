@@ -4,22 +4,28 @@ import {
     SafeAreaView,
     ScrollView,
     Dimensions,
-    View
+    View,
+    Text,
+    Button
 } from 'react-native'
 import _ from 'lodash';
+import StyleConstants from '../styles/styleConstants'
 import PlayerInfo from '../components/scrollablePlayerList/playerInfo';
 import PlayerStats from '../components/scrollablePlayerList/playerStats';
 import StatFilterHeader from '../components/scrollablePlayerList/statFilterHeader';
+import PlayerModal from '../components/playerModal/playerModal';
 import {API} from 'aws-amplify';
+import Modal from 'react-native-modal';
 
 const ViewTeamContext = React.createContext([{}, () => {
 }]);
 
 const ViewTeam = (props) => {
     const [team, setTeam] = useState([]);
+    const [modalData, setModalData] = useState({});
     const [viewTeamState, setViewTeamState] = useState({
         week: '0',
-        position: 'all'
+        position: 'all',
     });
 
     useEffect(() => {
@@ -58,7 +64,15 @@ const ViewTeam = (props) => {
         }
 
         return team.map((player) => {
-            return <PlayerInfo key={player.name} player={player} theme={'dark'}/>
+            return <PlayerInfo
+                onClick={()=>{
+                    console.log('clicked');
+                    setModalData(player)
+                }}
+                key={player.name}
+                player={player}
+                theme={'dark'}
+            />
         });
     };
 
@@ -74,7 +88,8 @@ const ViewTeam = (props) => {
         return team.map((player) => {
             return <PlayerStats
                 position={player.position}
-                stats={_.get(player, 'stats', {})}
+                // TODO fix stats.stats on backend
+                stats={_.get(player, 'stats.stats', {})}
             />
         });
     };
@@ -93,6 +108,12 @@ const ViewTeam = (props) => {
                         </ScrollView>
                     </View>
                 </ScrollView>
+                <Modal isVisible={!_.isEmpty(modalData)}>
+                    <PlayerModal
+                        player={modalData}
+                        closeModal={() => setModalData({})}
+                    />
+                </Modal>
             </SafeAreaView>
         </ViewTeamContext.Provider>
     )
@@ -101,8 +122,8 @@ const ViewTeam = (props) => {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height-88,
-        backgroundColor: '#1b2836',
+        height: Dimensions.get('window').height - 88,
+        backgroundColor: StyleConstants.tweetsColor,
     },
     verticalScroll: {
         flex: 1,
@@ -115,6 +136,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         marginLeft: -50,
+        borderRadius: 10,
     }
 });
 

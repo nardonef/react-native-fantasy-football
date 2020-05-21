@@ -4,6 +4,7 @@ import {
     View,
     Text,
     Image,
+    TouchableOpacity
 } from 'react-native'
 import StyleConsts from "../../styles/styleConstants";
 
@@ -51,33 +52,44 @@ const PlayerInfo = (props) => {
         return position
     };
 
+    const profileImageContainerClass = [styles.profileImageContainer];
+
+    if (!props.player.fantasyRosterPosition) {
+        profileImageContainerClass.push({paddingLeft: 15})
+    }
+
     return (
-        <View style={[styles.container, backgroundStyle(props.theme)]}>
-            <View style={styles.profileImageContainer}>
-                <View style={styles.fantasyRosterPosition}>
-                    <Text style={styles.fantasyRosterPositionText}>
-                        {renderPosition(props.player.fantasyRosterPosition)}
-                    </Text>
+        <TouchableOpacity onPress={props.onClick}>
+            <View style={[styles.container, backgroundStyle(props.theme)]}>
+                <View style={profileImageContainerClass}>
+                    {props.player.fantasyRosterPosition
+                        ? <View style={styles.fantasyRosterPosition}>
+                            <Text style={[styles.fantasyRosterPositionText, textColorStyle(props.theme)]}>
+                                {renderPosition(props.player.fantasyRosterPosition)}
+                            </Text>
+                        </View>
+                        : null
+                    }
+                    <Image
+                        style={styles.profileImage}
+                        source={{uri: props.player.picture}}
+                    />
                 </View>
-                <Image
-                    style={styles.profileImage}
-                    source={{uri: props.player.picture}}
-                />
-            </View>
-            <View style={styles.textContainer}>
-                <Text style={[styles.name, textColorStyle(props.theme)]}>
-                    {buildName()}
-                </Text>
-                <View style={styles.bottomSection}>
-                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
-                        {props.player.abbreviatedTeamName}
+                <View style={styles.textContainer}>
+                    <Text style={[styles.name, textColorStyle(props.theme)]}>
+                        {buildName()}
                     </Text>
-                    <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
-                        {props.player.position}
-                    </Text>
+                    <View style={styles.bottomSection}>
+                        <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
+                            {props.player.abbreviatedTeamName}
+                        </Text>
+                        <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
+                            {props.player.position}
+                        </Text>
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableOpacity>
     )
 };
 
@@ -137,6 +149,7 @@ PlayerInfo.defaultProps = {
         position: '',
     },
     theme: 'light',
+    onClick: () => {},
 };
 
 export default PlayerInfo;

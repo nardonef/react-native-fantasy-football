@@ -1,0 +1,32 @@
+{
+  "QB": {
+    "Pass Yds": "passing.passYards",
+    "Pass TDs": "passing.passTD",
+    "Ints": "passing.passInt"
+  },
+  "RB": {
+    "Rush Yds": "rushing.rushYards",
+    "Rush TDs": "rushing.rushTD",
+    "20+ Yd Rush": "rushing.rush20Plus",
+    "40+ Yd Rush": "rushing.rush40Plus"
+  },
+  "WR": {
+    "Rec Yds": "receiving.recYards",
+    "Rec TDs": "receiving.recTD",
+    "Targets": "receiving.targets",
+    "Receptions": "receiving.receptions"
+  },
+  "TE": {
+    "Rec Yds": "receiving.recYards",
+    "Rec TDs": "receiving.recTD",
+    "Targets": "receiving.targets",
+    "Receptions": "receiving.receptions"
+  },
+  "K": {
+    "1-19 Yds": "fieldGoals.fgMade1_19",
+    "20-29 Yds": "fieldGoals.fgMade20_29",
+    "30-39 Yds": "fieldGoals.fgMade30_39",
+    "40-49 Yds": "fieldGoals.fgMade40_49",
+    "50+ Yds": "fieldGoals.fgMade50Plus"
+  }
+}

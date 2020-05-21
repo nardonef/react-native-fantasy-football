@@ -61,7 +61,7 @@ const {
     getUserIdFromRequest,
     getUser,
     getFreeAgents,
-    refreshToken
+    refreshToken,
 } = require('./utilityFunctions');
 
 const getTeam = async (accessKey, leagueId) => {
@@ -113,6 +113,38 @@ const getData = async  (week) => {
     const allPlayersData = JSON.parse(fileContents);
 
     return allPlayersData[dataProperty];
+};
+
+const getPlayerWeeklyData = async (playerName) => {
+    const promises = [];
+    for (let week=16; week>0; week--) {
+        promises.push(getData(week));
+    }
+
+    const allWeeksData = await Promise.all(promises);
+
+    const playerStats = {};
+
+    for (let week=1; week<=17; week++) {
+        for (const weeklyStats of allWeeksData) {
+            if (weeklyStats[0].game.week !== week) {
+                continue;
+            }
+
+            for (const playerData of weeklyStats) {
+                if (`${playerData.player.firstName} ${playerData.player.lastName}` === playerName) {
+                    playerStats[week] = playerData;
+                    break;
+                }
+            }
+
+            if (!playerStats[week]) {
+                playerStats[week] = {};
+            }
+        }
+    }
+
+    return playerStats;
 };
 
 app.get('/team', async function(req, res) {
@@ -187,61 +219,18 @@ app.get('/team/data', async function(req, res) {
     }
 });
 
-// app.get('/team/data/weekly', async function(req, res) {
-//
-//
-//     if (!week) {
-//         res.status(500).send({
-//             error: 'no week query string param'
-//         })
-//     }
-//
-//     try {
-//         // GET ROSTER
-//         const roster = await getTeam(req.token.access_token, req.leagueId);
-//
-//         // GET PLAYER DATA
-//         const data = await getData(week);
-//         const fileContents = data.Body.toString();
-//         const allPlayersData = JSON.parse(fileContents);
-//         const playersWithData = [];
-//         allPlayersData.gamelogs.forEach((playerData) => {
-//             const dataPlayerName = `${playerData.player.firstName} ${playerData.player.lastName}`;
-//
-//             roster.forEach((player) => {
-//                 if (player.name === dataPlayerName) {
-//                     player.stats = playerData;
-//                     playersWithData.push(player);
-//                 }
-//             });
-//         });
-//
-//         // Seems that either there are either players missing from the data set or
-//         // if a player didn't play on a week they are not included in the data set
-//         // this is so we have the full roster in the response
-//         roster.forEach((rosterPlayer) => {
-//             let inResponse = false;
-//             playersWithData.forEach((player) => {
-//                 if (rosterPlayer.name === player.name) {
-//                     inResponse = true;
-//                 }
-//             });
-//
-//             if (!inResponse) {
-//                 playersWithData.push(rosterPlayer);
-//             }
-//         });
-//
-//         const sortedPlayersWithData = sortRoster(playersWithData);
-//         res.json({
-//             data: sortedPlayersWithData,
-//         });
-//     } catch (e) {
-//         console.log(e);
-//         res.status(500).send(e)
-//     }
-// });
+app.get('/team/player/:playerName', async function(req, res) {
+    try {
+        const weeklyPlayerData = await getPlayerWeeklyData(_.startCase(req.params.playerName));
+        res.json({
+            data: weeklyPlayerData,
+        })
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e)
+    }
 
+});
 
 //TODO change to free agents
 app.get('/team/waiver-wire', async function(req, res) {

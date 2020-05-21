@@ -9,45 +9,51 @@ import {
 } from 'react-native'
 import PropTypes from 'prop-types';
 import TileContainer from "./tileContainer";
+import StyleConsts from "../styles/styleConstants";
 
 const Tweet = (props) => {
     console.log(props);
+
+    const backgroundStyle = (theme) => {
+        if (theme === 'dark') {
+            return {
+                backgroundColor: StyleConsts.tweetsColor,
+                borderBottomColor: "white",
+            }
+        }
+
+        return {
+            backgroundColor: 'white',
+            borderBottomColor: StyleConsts.tweetsColor,
+        }
+    };
+
+    const textColorStyle = (theme) => {
+        if (theme === 'dark') {
+            return {
+                color: 'white',
+            }
+        }
+
+        return {
+            color: StyleConsts.tweetsColor,
+        }
+    };
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, backgroundStyle(props.theme)]}>
             <View style={styles.profileImageContainer}>
                 <Image
                     style={styles.profileImage}
                     source={{uri: props.profileImage}}
                 />
             </View>
-            <View style={styles.textContainer}>
-                <Text style={styles.user}>{props.user}</Text>
-                <Text style={styles.text}>{props.text}</Text>
+            <View>
+                <Text style={[styles.user, textColorStyle(props.theme)]}>{props.user}</Text>
+                <Text style={[styles.text, textColorStyle(props.theme)]}>{props.text}</Text>
             </View>
         </View>
     )
 };
-
-// const Tweet = (props) => {
-//     console.log(props);
-//
-//     const tweet = <>
-//         <View style={styles.profileImageContainer}>
-//             <Image
-//                 style={styles.profileImage}
-//                 source={{uri: props.profileImage}}
-//             />
-//         </View>
-//         <View style={styles.textContainer}>
-//             <Text style={styles.user}>{props.user}</Text>
-//             <Text style={styles.text}>{props.text}</Text>
-//         </View>
-//     </>;
-//
-//     return (
-//         <TileContainer component={tweet}/>
-//     )
-// };
 
 const styles = StyleSheet.create({
     profileImage: {
@@ -59,9 +65,6 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
     },
-    textContainer: {
-
-    },
     container: {
         borderBottomColor: "white",
         borderBottomWidth: 1,
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15,
         paddingRight: 100,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     text: {
         color: 'white',

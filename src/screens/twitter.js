@@ -25,7 +25,12 @@ class HomeScreen extends React.Component {
         }
 
         return this.state.tweets.map(tweet => {
-            return <Tweet text={tweet.text} user={tweet.user} profileImage={tweet.profile_image}/>
+            return <Tweet
+                theme={'dark'}
+                text={tweet.text}
+                user={tweet.user}
+                profileImage={tweet.profile_image}
+            />
         })
     }
 
