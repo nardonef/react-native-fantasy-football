@@ -11,7 +11,7 @@ import _ from 'lodash';
 import PropTypes from 'prop-types';
 import Button from '../components/button';
 import FormTextInput from '../components/FormTextInput';
-import {Auth, API} from 'aws-amplify';
+import {Auth} from 'aws-amplify';
 import styleConstants from '../styles/styleConstants';
 import {checkForRefreshToken} from '../Authentication/yahooAuth';
 
@@ -35,19 +35,6 @@ const SignIn = (props) => {
             const userData = await Auth.signIn(username, password);
             const userId = _.get(userData, 'attributes.sub', null);
             AsyncStorage.setItem('user_id', userId);
-
-            // const apiName = 'team';
-            // const path = '/team/data/weekly';
-            // const options = {
-            //     queryStringParameters: {
-            //         week: 1,
-            //     },
-            // };
-            // API.get(apiName, path, options)
-            //     .then(console.log)
-            //     .catch((e) => {
-            //         console.log(JSON.stringify(e));
-            //     });
 
             navigate('HomeNavigator')
         } catch (e) {

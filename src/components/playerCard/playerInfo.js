@@ -55,7 +55,7 @@ const PlayerInfo = (props) => {
     const profileImageContainerClass = [styles.profileImageContainer];
 
     if (!props.player.fantasyRosterPosition) {
-        profileImageContainerClass.push({paddingLeft: 15})
+        profileImageContainerClass.push({paddingLeft: 10})
     }
 
     return (
@@ -86,6 +86,12 @@ const PlayerInfo = (props) => {
                         <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
                             {props.player.position}
                         </Text>
+                        {props.number
+                            ? <Text style={[styles.bottomSectionText, textColorStyle(props.theme)]}>
+                                #{props.number}
+                            </Text>
+                            : null
+                        }
                     </View>
                 </View>
             </View>

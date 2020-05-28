@@ -5,7 +5,6 @@ import _ from 'lodash'
 import Stat from './stat';
 
 const PlayerStats = (props) => {
-    console.log(props.stats);
     const buildStats = () => {
         if (!props.stats) {
             return null;

@@ -1,8 +1,8 @@
 import React, {useContext, useState} from 'react'
 import {StyleSheet, View, Text} from 'react-native'
-import StyleConsts from "../../../styles/styleConstants";
+import StyleConsts from "../../styles/styleConstants";
 import Picker from 'react-native-wheel-picker'
-import {ViewTeamContext} from "../../../screens/viewTeam";
+import {ViewTeamContext} from "../../screens/viewTeam";
 const PickerItem = Picker.Item;
 
 const PositionFilter = (props) => {

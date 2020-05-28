@@ -7,9 +7,9 @@ import {
     View
 } from 'react-native'
 import _ from 'lodash';
-import PlayerInfo from '../components/scrollablePlayerList/playerInfo';
-import PlayerStats from '../components/scrollablePlayerList/playerStats';
-import StatFilterHeader from '../components/scrollablePlayerList/statFilterHeader';
+import PlayerInfo from '../components/playerCard/playerInfo';
+import PlayerStats from '../components/playerCard/playerStats';
+import StatFilterHeader from '../components/playerCard/statFilterHeader';
 import {API} from 'aws-amplify';
 
 const ViewWaiverWire = () => {

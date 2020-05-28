@@ -2,8 +2,8 @@ import React, {useState, useContext} from 'react'
 import {StyleSheet, View, Text} from 'react-native'
 import Modal from "react-native-modal";
 import Button from "../button";
-import SeasonFilter from "./filterModals/seasonFilter"
-import PositionFilter from "./filterModals/positionFilter"
+import SeasonFilter from "../filterModals/seasonFilter"
+import PositionFilter from "../filterModals/positionFilter"
 import {ViewTeamContext} from '../../screens/viewTeam'
 import _ from 'lodash';
 import StyleConsts from "../../styles/styleConstants";

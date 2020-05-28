@@ -1,6 +1,6 @@
 {
-    "resource": "/team/player/Ameer-Abdullah",
-    "path": "/team/player/Ameer-Abdullah",
+    "resource": "/team/news",
+    "path": "/team/news",
     "httpMethod": "GET",
     "headers": {
         "Accept": "application/json, text/plain, */*",
@@ -99,11 +99,11 @@
     "stageVariables": null,
     "requestContext": {
         "resourceId": "jsbggy",
-        "resourcePath": "/team/player/Ameer-Abdullah",
+        "resourcePath": "/team/news",
         "httpMethod": "GET",
         "extendedRequestId": "H3aG5Eo8oAMFglg=",
         "requestTime": "14/Feb/2020:02:47:08 +0000",
-        "path": "/prod/team/player/Ameer-Abdullah",
+        "path": "/prod/team/news",
         "accountId": "932542346500",
         "protocol": "HTTP/1.1",
         "stage": "prod",

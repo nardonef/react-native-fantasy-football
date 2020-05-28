@@ -18,7 +18,8 @@ import {
 } from "react-native-chart-kit";
 import _ from 'lodash';
 import StyleConstants from '../../styles/styleConstants'
-import PlayerInfo from '../scrollablePlayerList/playerInfo';
+import PlayerInfo from '../playerCard/playerInfo';
+import PlayerAttributes from '../playerCard/playerAttributes';
 import Modal from 'react-native-modal';
 import GraphPicker from './graphPicker';
 import PositionStatCategories from '../positionStatCategories'
@@ -59,10 +60,23 @@ const PlayerModal = (props) => {
         return data;
     };
 
+    console.log(playerData)
+
     return (
         <View style={styles.container}>
-            <View>
-                <PlayerInfo player={playerData} theme={'dark'}/>
+            <View style={styles.topContainer}>
+                <PlayerInfo
+                    number={playerData.number}
+                    player={playerData}
+                    theme={'dark'}
+                />
+                <PlayerAttributes
+                    // age={_.get(playerData, 'stats.player.age')}
+                    age={_.get(playerData, 'stats.player.age')}
+                    weight={_.get(playerData, 'stats.player.weight')}
+                    height={_.get(playerData, 'stats.player.height')}
+
+                />
             </View>
             <View style={styles.centerItems}>
                 <Button title={`Weekly ${graphType}`} onPress={() => setModalVisible(true)}/>
@@ -133,6 +147,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         margin: 0
     },
+    topContainer: {
+        flexDirection: 'row'
+    }
 });
 
 export default PlayerModal;

@@ -8,7 +8,7 @@ import {
     Text
 } from 'react-native'
 import _ from 'lodash';
-import PlayerInfo from './scrollablePlayerList/playerInfo';
+import PlayerInfo from './playerCard/playerInfo';
 import StyleConsts from "../styles/styleConstants";
 import Icon from "react-native-vector-icons/FontAwesome5";
 

@@ -115,6 +115,19 @@ const getData = async  (week) => {
     return allPlayersData[dataProperty];
 };
 
+const getNews = async () => {
+    const s3 = new AWS.S3();
+
+    let params = {
+        Bucket: "nfl-news",
+        Key: "news.json"
+    };
+
+    const data = await s3.getObject(params).promise();
+    const fileContents = data.Body.toString();
+    return JSON.parse(fileContents);
+};
+
 const getPlayerWeeklyData = async (playerName) => {
     const promises = [];
     for (let week=16; week>0; week--) {
@@ -235,10 +248,6 @@ app.get('/team/player/:playerName', async function(req, res) {
 //TODO change to free agents
 app.get('/team/waiver-wire', async function(req, res) {
     try {
-        // const userId = getUserIdFromRequest(req);
-        // const user = await getUser(AWS, userId);
-        // const accessKey = _.get(user, 'yahooAccessKey', '');
-        // const leagueId = _.get(user, 'leagueId', '');
         const freeAgents = await getFreeAgents(req.token.access_token, req.leagueId);
         const freeAgentsResponse = freeAgents.map(player => player.toObject());
         res.json({
@@ -251,11 +260,21 @@ app.get('/team/waiver-wire', async function(req, res) {
 
 });
 
+app.get('/team/news', async function(req, res) {
+    try {
+        const news = await getNews();
+        res.json({
+            data: news,
+        })
+    } catch (e) {
+        console.log(e);
+        res.status(500).send(e)
+    }
+
+});
+
 app.listen(3000, function() {
     console.log("App started")
 });
 
-// Export the app object. When executing the application local this does nothing. However,
-// to port it to AWS Lambda we will create a wrapper around that will load the app from
-// this file
 module.exports = app;

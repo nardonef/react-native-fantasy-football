@@ -97,6 +97,8 @@ const getFreeAgents = async (accessToken, leagueId) => {
 
         const data = await response.json();
 
+        console.log(JSON.stringify(data.fantasy_content.league[1].players));
+
         freeAgents.push(...formatYahooRoster(data.fantasy_content.league[1].players));
 
         // if (data.fantasy_content.league[1].players.count !== 25) {

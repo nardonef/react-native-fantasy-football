@@ -10,9 +10,9 @@ import {
 } from 'react-native'
 import _ from 'lodash';
 import StyleConstants from '../styles/styleConstants'
-import PlayerInfo from '../components/scrollablePlayerList/playerInfo';
-import PlayerStats from '../components/scrollablePlayerList/playerStats';
-import StatFilterHeader from '../components/scrollablePlayerList/statFilterHeader';
+import PlayerInfo from '../components/playerCard/playerInfo';
+import PlayerStats from '../components/playerCard/playerStats';
+import StatFilterHeader from '../components/playerCard/statFilterHeader';
 import PlayerModal from '../components/playerModal/playerModal';
 import {API} from 'aws-amplify';
 import Modal from 'react-native-modal';
